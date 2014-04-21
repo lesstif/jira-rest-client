@@ -1,4 +1,4 @@
-package com.example.jira.project;
+package com.example.jira.issue;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,18 +22,21 @@ import lombok.Data;
  *
  */
 @Data
-public class ProjectService {
+public class IssueService {
 	private JIRAHTTPClient client = null;
 	
-	public ProjectService() {
+	private JIRAIssue issue;
+	
+	public IssueService() {
 		client = new JIRAHTTPClient();
 	}
 	
-	public List<Project> getProjectList() throws JsonParseException, JsonMappingException, IOException {
+	public JIRAIssue getIssue(String issueKey) throws JsonParseException, JsonMappingException, IOException {
 		if (client == null)
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
-		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT);
+		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + issueKey);
+		
 		ClientResponse response = client.getResponse();
 					
 		String content = response.getEntity(String.class);	
@@ -41,9 +44,9 @@ public class ProjectService {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 		
-		TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
-		List<Project> prj = mapper.readValue(content, ref);
+		TypeReference<JIRAIssue> ref = new TypeReference<JIRAIssue>(){};
+		issue = mapper.readValue(content, ref);
 		
-		return prj;
-	}
+		return issue;
+	}	
 }

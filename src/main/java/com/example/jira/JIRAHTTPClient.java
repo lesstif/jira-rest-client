@@ -80,4 +80,9 @@ public class JIRAHTTPClient {
 		
 		return prj;
 	}
+
+	public List<Project> getIssue(String issueKey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
