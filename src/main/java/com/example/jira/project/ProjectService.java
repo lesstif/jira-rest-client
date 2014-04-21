@@ -11,7 +11,11 @@ import lombok.Data;
  *
  */
 @Data
-public class Project {
+public class ProjectService {
+	
+	public List<Project> listProjects() {
+		return null;
+	}
 	
 	private String self;
 	

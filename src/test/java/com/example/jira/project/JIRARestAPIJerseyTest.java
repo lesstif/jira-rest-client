@@ -1,6 +1,7 @@
 package com.example.jira.project;
 import static org.junit.Assert.fail;
 
+import java.awt.Container;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,7 +20,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.After;
@@ -28,6 +31,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.jira.Constants;
+import com.example.jira.JIRAHTTPClient;
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -39,54 +44,27 @@ import com.sun.jersey.api.json.JSONConfiguration;
 
 public class JIRARestAPIJerseyTest {
 
-	public static final String JIRA_API_URL = "https://jira.ktnet.com/rest/api/2/";
-
 	private Logger logger = LoggerFactory.getLogger(getClass());
-
+	
+	private JIRAHTTPClient client ;
 	@Before
 	public void setup() {
-
+		client = new JIRAHTTPClient();
 	}
 
 	@After
 	public void teardown() throws IOException {
-
+		client = null;
 	}
 
 	@Test
-	public void listProject() {
-		try {			
-			ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-			
-			Client client = Client.create(clientConfig);
-			
-			client.addFilter(new HTTPBasicAuthFilter("rest-api", "apitest1"));
-			WebResource webResource = client.resource(JIRA_API_URL + "project");
-	
-			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-	
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
-			}
-	
-			String content = response.getEntity(String.class);	
-						
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-			
-			TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
-			List<Project> prj = mapper.readValue(content, ref);
-			
-			int i = 0;
-			for (Project p : prj) {
-				logger.info(i++ + "th " + p );
-			}
+	public void listProject() throws JsonParseException, JsonMappingException, IOException {
+
+		List<Project> prj = client.getProjectList();
+		
+		int i = 0;
+		for (Project p : prj) {
+			logger.info(i++ + "th " + p );
 		}
-		catch (Exception e) {
-			 
-			e.printStackTrace();
-	 
-		  }
 	}
 }
