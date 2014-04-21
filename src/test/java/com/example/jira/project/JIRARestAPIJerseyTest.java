@@ -1,3 +1,4 @@
+package com.example.jira.project;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -34,7 +36,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
-
 
 public class JIRARestAPIJerseyTest {
 
@@ -53,7 +54,7 @@ public class JIRARestAPIJerseyTest {
 	}
 
 	@Test
-	public void jerseyTest() {
+	public void listProject() {
 		try {			
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -63,28 +64,23 @@ public class JIRARestAPIJerseyTest {
 			client.addFilter(new HTTPBasicAuthFilter("rest-api", "apitest1"));
 			WebResource webResource = client.resource(JIRA_API_URL + "project");
 	
-			ClientResponse response = webResource.accept("application/json").get(
-					ClientResponse.class);
+			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 	
 			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
+				throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
 			}
 	
 			String content = response.getEntity(String.class);	
-			
-			//System.out.println("Output from Server .... \n");
-			//System.out.println(content);
-			
+						
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 			
-			TypeReference ref = new TypeReference<List<Project>>(){};
+			TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
 			List<Project> prj = mapper.readValue(content, ref);
 			
 			int i = 0;
 			for (Project p : prj) {
-				System.out.println(i++ + "th " + prj + "\n");
+				logger.info(i++ + "th " + p );
 			}
 		}
 		catch (Exception e) {
