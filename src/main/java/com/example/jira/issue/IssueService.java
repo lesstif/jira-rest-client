@@ -2,6 +2,7 @@ package com.example.jira.issue;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -25,13 +26,13 @@ import lombok.Data;
 public class IssueService {
 	private JIRAHTTPClient client = null;
 	
-	private JIRAIssue issue;
+	private Issue issue;
 	
-	public IssueService() {
+	public IssueService() throws ConfigurationException {
 		client = new JIRAHTTPClient();
 	}
 	
-	public JIRAIssue getIssue(String issueKey) throws JsonParseException, JsonMappingException, IOException {
+	public Issue getIssue(String issueKey) throws JsonParseException, JsonMappingException, IOException {
 		if (client == null)
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
@@ -44,7 +45,7 @@ public class IssueService {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 		
-		TypeReference<JIRAIssue> ref = new TypeReference<JIRAIssue>(){};
+		TypeReference<Issue> ref = new TypeReference<Issue>(){};
 		issue = mapper.readValue(content, ref);
 		
 		return issue;

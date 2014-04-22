@@ -2,6 +2,7 @@ package com.example.jira.project;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -25,7 +26,7 @@ import lombok.Data;
 public class ProjectService {
 	private JIRAHTTPClient client = null;
 	
-	public ProjectService() {
+	public ProjectService() throws ConfigurationException {
 		client = new JIRAHTTPClient();
 	}
 	
