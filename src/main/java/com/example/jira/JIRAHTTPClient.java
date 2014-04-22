@@ -3,6 +3,8 @@ package com.example.jira;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -25,13 +27,16 @@ public class JIRAHTTPClient {
 	
 	private WebResource webResource;
 		
-	public JIRAHTTPClient() {
+	private PropertiesConfiguration config = null;
+	
+	public JIRAHTTPClient() throws ConfigurationException {
+		config = new PropertiesConfiguration("jira-rest-client.properties");
 		clientConfig = new DefaultClientConfig();
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		
 		client = Client.create(clientConfig);
 		
-		client.addFilter(new HTTPBasicAuthFilter(Constants.JIRA_USER_ID, Constants.JIRA_USER_PWD));		
+		client.addFilter(new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd")));		
 	}
 	
 	/**
@@ -47,7 +52,7 @@ public class JIRAHTTPClient {
 	 * @param url
 	 */
 	public void setResourceName(String resourceName) {
-		webResource = client.resource(Constants.JIRA_API_URL + resourceName);
+		webResource = client.resource(config.getString("jira.server.url") + resourceName);
 	}
 	
 	public ClientResponse getResponse() {
