@@ -10,4 +10,5 @@ public class Issue {
 	private String key;
 	
 	private IssueFields fields;
+	private IssueType issuetype;
 }

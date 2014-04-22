@@ -32,7 +32,7 @@ public class JIRAHTTPClient {
 	public JIRAHTTPClient() throws ConfigurationException {
 		config = new PropertiesConfiguration("jira-rest-client.properties");
 		clientConfig = new DefaultClientConfig();
-		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
 		
 		client = Client.create(clientConfig);
 		
