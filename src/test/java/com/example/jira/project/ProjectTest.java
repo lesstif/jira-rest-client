@@ -9,9 +9,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.jira.issue.IssueService;
-import com.example.jira.issue.Issue;
-
 public class ProjectTest {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());

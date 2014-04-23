@@ -1,6 +1,5 @@
 package com.example.jira.project;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.codehaus.jackson.JsonParseException;
@@ -9,9 +8,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.jira.issue.Issue;
 import com.example.jira.issue.IssueFields;
 import com.example.jira.issue.IssueService;
-import com.example.jira.issue.Issue;
 
 public class IssueTest {
 
