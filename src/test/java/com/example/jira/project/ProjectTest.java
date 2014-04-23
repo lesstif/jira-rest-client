@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.example.jira.issue.IssueService;
 import com.example.jira.issue.Issue;
 
-public class JIRARestAPIJerseyTest {
+public class ProjectTest {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -26,17 +26,5 @@ public class JIRARestAPIJerseyTest {
 		for (Project p : prj) {
 			logger.info(i++ + "th " + p );
 		}
-	}
-	
-	@Test
-	public void getIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
-		String issueKey = 
-				//"TEST-824";
-				"NCA-208";
-
-		IssueService issueService = new IssueService();
-		Issue issue =  issueService.getIssue(issueKey);
-
-		logger.info(issue.toString());
-	}
+	}	
 }
