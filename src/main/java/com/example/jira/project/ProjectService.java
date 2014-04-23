@@ -35,7 +35,7 @@ public class ProjectService {
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT);
-		ClientResponse response = client.getResponse();
+		ClientResponse response = client.get();
 					
 		String content = response.getEntity(String.class);	
 		

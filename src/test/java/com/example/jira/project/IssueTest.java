@@ -9,24 +9,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.jira.issue.IssueFields;
 import com.example.jira.issue.IssueService;
 import com.example.jira.issue.Issue;
 
 public class IssueTest {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@Test
-	public void listProject() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
-		ProjectService prjService = new ProjectService();
-		
-		List<Project> prj = prjService.getProjectList();
-		
-		int i = 0;
-		for (Project p : prj) {
-			logger.info(i++ + "th " + p );
-		}
-	}
 	
 	@Test
 	public void getIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
@@ -38,5 +27,29 @@ public class IssueTest {
 		Issue issue =  issueService.getIssue(issueKey);
 
 		logger.info(issue.toString());
+	}
+	
+	@Test
+	public void createIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
+
+		Issue issue = new Issue();
+		
+		IssueFields fields = new IssueFields();
+		
+		fields.setProjectId("10000");
+		fields.setSummary("something's wrong");
+		fields.setIssueTypeId("10000");
+		fields.setAssigneeName("test1");
+		fields.setReporterName("lesstif");
+		fields.setPriorityId("123");
+		fields.setLabels(new String[]{"bugfix","blitz_test"});
+		
+		logger.info(issue.toString());
+		
+		IssueService issueService = new IssueService();
+
+		issueService.createIssue(issue);
+
+		
 	}
 }
