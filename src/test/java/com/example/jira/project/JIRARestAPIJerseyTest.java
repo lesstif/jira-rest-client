@@ -30,8 +30,10 @@ public class JIRARestAPIJerseyTest {
 	
 	@Test
 	public void getIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
-		String issueKey = "TEST-824";
-		
+		String issueKey = 
+				//"TEST-824";
+				"NCA-208";
+
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
 

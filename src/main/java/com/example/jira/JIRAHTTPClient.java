@@ -36,7 +36,13 @@ public class JIRAHTTPClient {
 		
 		client = Client.create(clientConfig);
 		
-		client.addFilter(new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd")));		
+		HTTPBasicAuthFilter auth = null;
+		
+		if (config.getString("jira.user.id") != null && config.getString("jira.user.pwd") != null)
+		{
+			auth = new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd"));
+			client.addFilter(auth);
+		}
 	}
 	
 	/**
