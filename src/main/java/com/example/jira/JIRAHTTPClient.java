@@ -3,6 +3,10 @@ package com.example.jira;
 import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.codehaus.jackson.JsonParseException;
@@ -13,11 +17,13 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 public class JIRAHTTPClient {
@@ -30,11 +36,17 @@ public class JIRAHTTPClient {
 	private PropertiesConfiguration config = null;
 	
 	public JIRAHTTPClient() throws ConfigurationException {
+		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
+		org.slf4j.bridge.SLF4JBridgeHandler.install();
+				
 		config = new PropertiesConfiguration("jira-rest-client.properties");
 		clientConfig = new DefaultClientConfig();
+				
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
 		
 		client = Client.create(clientConfig);
+		
+		client.addFilter(new LoggingFilter());
 		
 		HTTPBasicAuthFilter auth = null;
 		
@@ -58,15 +70,16 @@ public class JIRAHTTPClient {
 	 * @param url
 	 */
 	public void setResourceName(String resourceName) {
-		webResource = client.resource(config.getString("jira.server.url") + resourceName);
+		webResource = client.resource(config.getString("jira.server.url") + resourceName);		
 	}
 	
-	public ClientResponse getResponse() {
+	public <T> ClientResponse post(String entity) {
 		if (webResource == null) {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
 		
-		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+		webResource.entity(entity);
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
 		
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
@@ -75,25 +88,18 @@ public class JIRAHTTPClient {
 		return response;
 	}
 	
-	// 
-	public List<Project> getProjectList() throws JsonParseException, JsonMappingException, IOException {
+	public ClientResponse get() {
+		if (webResource == null) {
+			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
+		}
 		
-		setResourceName(Constants.JIRA_RESOURCE_PROJECT);
-		ClientResponse response = getResponse();
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 		
-		String content = response.getEntity(String.class);	
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
+		}
 		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		
-		TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
-		List<Project> prj = mapper.readValue(content, ref);
-		
-		return prj;
-	}
-
-	public List<Project> getIssue(String issueKey) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		return response;
+	}	
+	
 }

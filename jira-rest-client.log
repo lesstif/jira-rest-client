@@ -1,0 +1,30 @@
+117  [main] INFO  com.example.jira.project.IssueTest - Issue(expand=null, id=null, self=null, key=null, fields=null, issuetype=null)
+135  [main] DEBUG o.a.c.c.PropertiesConfiguration - FileName set to jira-rest-client.properties
+136  [main] DEBUG o.a.c.c.ConfigurationUtils - ConfigurationUtils.locate(): base is null, name is jira-rest-client.properties
+136  [main] DEBUG o.a.c.c.DefaultFileSystem - Could not locate file jira-rest-client.properties at null: no protocol: jira-rest-client.properties
+139  [main] DEBUG o.a.c.c.ConfigurationUtils - Loading configuration from the context classpath (jira-rest-client.properties)
+139  [main] DEBUG o.a.c.c.PropertiesConfiguration - Base path set to file:///D:/work_java/github/JIRA-rest-api/target/classes/jira-rest-client.properties
+387  [main] INFO  c.s.j.a.client.filter.LoggingFilter - 1 * Client out-bound request
+1 > POST https://jira.ktnet.com/rest/api/2/issue
+1 > Accept: application/json
+1 > Authorization: Basic cmVzdC1hcGk6YXBpdGVzdDE=
+
+684  [main] INFO  c.s.j.a.client.filter.LoggingFilter - 1 * Client in-bound response
+1 < 415
+1 < Content-Language: en
+1 < Content-Length: 1092
+1 < X-ASESSIONID: 1u3zhxm
+1 < Set-Cookie: atlassian.xsrf.token=BLVT-RSED-R73Y-NKFY|6d7619b0eef2d5e6c1a1dc111fcbed16fd6ea4de|lin; Path=/; Secure
+1 < Set-Cookie: JSESSIONID=F6395376604DCE81F19823744E0735E2; Path=/; Secure; HttpOnly
+1 < Connection: close
+1 < X-AUSERNAME: rest-api
+1 < X-Seraph-LoginReason: OK
+1 < Server: Apache
+1 < X-Content-Type-Options: nosniff
+1 < Cache-Control: no-cache, no-store, no-transform
+1 < Date: Wed, 23 Apr 2014 11:08:13 GMT
+1 < Content-Type: text/html;charset=utf-8
+1 < X-AREQUESTID: 1208x304603x1
+1 < 
+<html><head><title>Apache Tomcat/7.0.47 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 415 - Unsupported Media Type</h1><HR size="1" noshade="noshade"><p><b>type</b> Status report</p><p><b>message</b> <u>Unsupported Media Type</u></p><p><b>description</b> <u>The server refused this request because the request entity is in a format not supported by the requested resource for the requested method.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.47</h3></body></html>
+

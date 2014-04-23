@@ -72,7 +72,7 @@ public class IssueFields {
 	private String[] fixVersions;
 	private DateTime resolutiondate;
 	
-	private Creator creator;
+	private Reporter creator;
 	
 	private DateTime aggregatetimeoriginalestimate;
 	private DateTime duedate;
@@ -80,7 +80,7 @@ public class IssueFields {
 	private Map<String, String> watches;
 	private Map<String, String> worklog;
 	
-	private Creator assignee;
+	private Reporter assignee;
 	
 	private Attachment attachment;
 	
@@ -89,4 +89,39 @@ public class IssueFields {
 	private List<Version> versions;
 	
 	private int timeestimate;
+	
+	// Helper method
+	public void setProjectId(String id) {
+		if (project == null)
+			project = new Project();
+		
+		project.setId(id);
+	}
+	
+	public void setIssueTypeId(String id) {
+		if (issuetype == null)
+			issuetype = new IssueType();
+		issuetype.setId(id);
+	}
+	
+	public void setAssigneeName(String name) {
+		if (assignee == null)
+			assignee = new Reporter();
+
+		assignee.setName(name);
+	}
+	
+	public void setReporterName(String name) {
+		if (reporter == null)
+			reporter = new Reporter();
+
+		reporter.setName(name);
+	}
+
+	public void setPriorityId(String id) {
+		if (priority == null)
+			priority = new Priority();
+
+		priority.setId(id);		
+	}
 }

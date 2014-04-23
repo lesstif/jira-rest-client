@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -38,7 +40,7 @@ public class IssueService {
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + issueKey);
 		
-		ClientResponse response = client.getResponse();
+		ClientResponse response = client.get();
 					
 		String content = response.getEntity(String.class);	
 		
@@ -50,4 +52,25 @@ public class IssueService {
 		
 		return issue;
 	}	
+	
+	public void createIssue(Issue issue) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		//mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT, true);
+		String content = mapper.writeValueAsString(issue);
+				
+		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE);
+		
+		ClientResponse response = client.post(content);
+					
+		content = response.getEntity(String.class);	
+		
+		
+		
+		
+		//TypeReference<Issue> ref = new TypeReference<Issue>(){};
+		
+		
+		return;
+	}
 }
