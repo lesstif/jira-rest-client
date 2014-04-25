@@ -6,6 +6,10 @@ import lombok.Data;
 
 @Data
 public class Component {
+	public Component() {
+		
+	}
+	
 	public Component(String name) {
 		this.name = name;
 	}

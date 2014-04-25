@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.jira.issue.Attachment;
 import com.example.jira.issue.Component;
 import com.example.jira.issue.Issue;
 import com.example.jira.issue.IssueFields;
@@ -21,14 +22,16 @@ public class IssueTest {
 	
 	@Test
 	public void getIssue() throws IOException, ConfigurationException {
-		String issueKey = 
-				//"TEST-824";
-				"NCA-208";
+		String issueKey = "TEST-833";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
 
 		logger.info(issue.toString());
+		// attachment info
+		List<Attachment> attachs = issue.getFields().getAttachment();
+		for ( Attachment a : attachs) 
+			logger.info(a.toPrettyJsonString());
 	}
 	
 	@Test
