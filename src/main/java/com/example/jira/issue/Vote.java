@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Vote {
 	private String self;
-	private int votes;
-	private boolean hasVoted;
+	private Integer votes;
+	private Boolean hasVoted;
 }

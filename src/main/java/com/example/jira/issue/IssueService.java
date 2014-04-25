@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 
 import com.example.jira.Constants;
 import com.example.jira.JIRAHTTPClient;
+import com.example.jira.project.Project;
 import com.sun.jersey.api.client.ClientResponse;
 
 import lombok.Data;
@@ -55,7 +56,7 @@ public class IssueService {
 		return issue;
 	}	
 	
-	public void createIssue(Issue issue) throws IOException {
+	public Issue createIssue(Issue issue) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		//to ignore a field if its value is null
@@ -70,6 +71,48 @@ public class IssueService {
 					
 		content = response.getEntity(String.class);	
 				
-		return;
+		mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        TypeReference<Issue> ref = new TypeReference<Issue>(){};
+        
+		return mapper.readValue(content, ref);
 	}
+	
+	/**
+	 * Returns a list of all issue types visible to the user
+	 * 
+	 * @throws IOException
+	 */
+	public List<IssueType> getAllIssueTypes() throws IOException {
+						
+		client.setResourceName(Constants.JIRA_RESOURCE_ISSUETYPE);
+		
+		ClientResponse response = client.get();
+		String content = response.getEntity(String.class);
+		
+		ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
+        
+        TypeReference<List<IssueType>> ref = new TypeReference<List<IssueType>>(){};
+		List<IssueType> issueTypes = mapper.readValue(content, ref);
+						
+		return issueTypes;
+	}
+	
+	public List<Priority> getAllPriorities() throws IOException {
+		
+		client.setResourceName(Constants.JIRA_RESOURCE_PRIORITY);
+		
+		ClientResponse response = client.get();
+		String content = response.getEntity(String.class);
+		
+		ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
+        
+        TypeReference<List<Priority>> ref = new TypeReference<List<Priority>>(){};
+		List<Priority> priorities = mapper.readValue(content, ref);
+						
+		return priorities;
+	}
+	
 }
