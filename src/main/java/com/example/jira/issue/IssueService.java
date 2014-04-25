@@ -24,6 +24,8 @@ import lombok.Data;
  */
 @Data
 public class IssueService {
+	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+	
 	private JIRAHTTPClient client = null;
 	
 	private Issue issue;
@@ -32,22 +34,39 @@ public class IssueService {
 		client = new JIRAHTTPClient();
 	}
 	
-	public Issue getIssue(String issueKey) throws JsonParseException, JsonMappingException, IOException {
+	public Issue getIssue(String issueKey) throws IOException {
 		if (client == null)
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + issueKey);
 		
-		ClientResponse response = client.getResponse();
+		ClientResponse response = client.get();
 					
-		String content = response.getEntity(String.class);	
+		String content = (String) response.getEntity();	
 		
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
 		TypeReference<Issue> ref = new TypeReference<Issue>(){};
 		issue = mapper.readValue(content, ref);
 		
 		return issue;
 	}	
+	
+	public void createIssue(Issue issue) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		//to ignore a field if its value is null
+		mapper.getSerializationConfig().withSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+		String content = mapper.writeValueAsString(issue);
+				
+		logger.debug("Content=" + content);
+		
+		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE);
+		
+		ClientResponse response = client.post(content);
+					
+		content = (String) response.getEntity();	
+				
+		return;
+	}
 }
