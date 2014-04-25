@@ -16,6 +16,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
@@ -78,11 +79,7 @@ public class JIRAHTTPClient {
 				.type(MediaType.APPLICATION_JSON)				
 				.get(ClientResponse.class);
 		
-		if (response.getStatus() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
-		}
-		
-		return response;
+		return checkStatus(response);
 	}
 		
 	public ClientResponse post(String content) {
@@ -94,8 +91,12 @@ public class JIRAHTTPClient {
 				.type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, content);
 		
+		return checkStatus(response);
+	}
+
+	private ClientResponse checkStatus(ClientResponse response) {
 		if (response.getStatus() != Status.OK.getStatusCode() && response.getStatus() != Status.CREATED.getStatusCode()) {
-			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
+			throw new ClientHandlerException("Failed : HTTP error code : "	+ response.getStatus());
 		}
 		
 		return response;
