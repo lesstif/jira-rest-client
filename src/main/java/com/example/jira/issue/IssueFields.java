@@ -6,7 +6,9 @@ import java.util.Map;
 import lombok.Data;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnoreType;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 
 import com.example.jira.project.Project;
@@ -17,6 +19,8 @@ import com.example.jira.project.Project;
 //TODO
 ,"attachment"
 })
+//@JsonInclude(Include.NON_EMPTY)
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class IssueFields {
 	private Project  project;
 	private String summary;
@@ -57,11 +61,11 @@ public class IssueFields {
 	
 	private String[] labels;
 	
-	private int workratio;
+	private Integer workratio;
 	
 	private String environment;
 	
-	private String[] components;
+	private List<Component> components;
 	
 	private Comment comment;
 	
@@ -88,7 +92,7 @@ public class IssueFields {
 	
 	private List<Version> versions;
 	
-	private int timeestimate;
+	private Integer timeestimate;
 	
 	// Helper method
 	public void setProjectId(String id) {
@@ -111,6 +115,12 @@ public class IssueFields {
 		issuetype.setId(id);
 	}
 	
+	public void setIssueTypeName(String name) {
+		if (issuetype == null)
+			issuetype = new IssueType();
+		issuetype.setName(name);
+	}
+	
 	public void setAssigneeName(String name) {
 		if (assignee == null)
 			assignee = new Reporter();
@@ -130,5 +140,12 @@ public class IssueFields {
 			priority = new Priority();
 
 		priority.setId(id);		
+	}
+	
+	public void setPriorityName(String name) {
+		if (priority == null)
+			priority = new Priority();
+
+		priority.setName(name);		
 	}
 }

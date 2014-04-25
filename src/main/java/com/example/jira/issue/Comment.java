@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Comment {
-	private int startAt;
-	private int maxResults;
-	private int total;
+	private Integer startAt;
+	private Integer maxResults;
+	private Integer total;
 	private String[] comments;
 }

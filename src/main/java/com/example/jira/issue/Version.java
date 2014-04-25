@@ -10,10 +10,10 @@ public class Version {
 	private String id;
 	private String description;
 	private String name;
-	private boolean archived;
-	private boolean released;
+	private Boolean archived;
+	private Boolean released;
 	private DateTime releaseDate;
-	private boolean overdue;
+	private Boolean overdue;
 	private DateTime userReleaseDate;
 	private String projectId;	 
 }

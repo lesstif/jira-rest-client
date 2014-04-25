@@ -3,6 +3,9 @@ package com.example.jira;
 import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.StatusType;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.codehaus.jackson.JsonParseException;
@@ -14,10 +17,12 @@ import org.codehaus.jackson.type.TypeReference;
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 
 public class JIRAHTTPClient {
@@ -30,17 +35,20 @@ public class JIRAHTTPClient {
 	private PropertiesConfiguration config = null;
 	
 	public JIRAHTTPClient() throws ConfigurationException {
+		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
+		org.slf4j.bridge.SLF4JBridgeHandler.install();
+		
 		config = new PropertiesConfiguration("jira-rest-client.properties");
 		clientConfig = new DefaultClientConfig();
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
 		
 		client = Client.create(clientConfig);
 		
-		HTTPBasicAuthFilter auth = null;
+		client.addFilter(new LoggingFilter());
 		
 		if (config.getString("jira.user.id") != null && config.getString("jira.user.pwd") != null)
 		{
-			auth = new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd"));
+			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd"));
 			client.addFilter(auth);
 		}
 	}
@@ -66,7 +74,9 @@ public class JIRAHTTPClient {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
 		
-		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+		ClientResponse response = webResource.accept("application/json")
+				.type(MediaType.APPLICATION_JSON)				
+				.get(ClientResponse.class);
 		
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
@@ -80,9 +90,11 @@ public class JIRAHTTPClient {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
 		
-		ClientResponse response = webResource.accept("application/json").post(ClientResponse.class);
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
+				.type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, content);
 		
-		if (response.getStatus() != 200) {
+		if (response.getStatus() != Status.OK.getStatusCode() && response.getStatus() != Status.CREATED.getStatusCode()) {
 			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
 		}
 		
