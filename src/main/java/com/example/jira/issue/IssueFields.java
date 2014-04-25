@@ -16,10 +16,7 @@ import com.example.jira.project.Project;
 @Data
 @JsonIgnoreProperties({"lastViewed", "aggregateprogress", "worklog"
 ,"timeoriginalestimate", "aggregatetimespent"
-//TODO
-,"attachment"
 })
-//@JsonInclude(Include.NON_EMPTY)
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class IssueFields {
 	private Project  project;
@@ -54,7 +51,7 @@ public class IssueFields {
 	private String customfield_11011;
 	private String customfield_11010, customfield_10401, customfield_10404, customfield_11100, customfield_10403, customfield_11101, customfield_11003, customfield_11002;
 	private String customfield_11005, customfield_11004, customfield_11001, customfield_11000, customfield_10602, customfield_10601, customfield_10600;
-	private String customfield_10502, customfield_10501;
+	private String customfield_10502, customfield_10501, customfield_10702, customfield_10700;
 	
 	private String[] subtasks;
 	private Status status;
@@ -86,7 +83,7 @@ public class IssueFields {
 	
 	private Reporter assignee;
 	
-	private Attachment attachment;
+	private List<Attachment> attachment;
 	
 	private DateTime aggregatetimeestimate;
 	
