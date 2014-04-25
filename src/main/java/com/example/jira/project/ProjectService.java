@@ -3,9 +3,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -30,12 +28,12 @@ public class ProjectService {
 		client = new JIRAHTTPClient();
 	}
 	
-	public List<Project> getProjectList() throws JsonParseException, JsonMappingException, IOException {
+	public List<Project> getProjectList() throws IOException {
 		if (client == null)
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT);
-		ClientResponse response = client.getResponse();
+		ClientResponse response = client.get();
 					
 		String content = response.getEntity(String.class);	
 		

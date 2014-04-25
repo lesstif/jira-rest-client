@@ -98,6 +98,13 @@ public class IssueFields {
 		project.setId(id);
 	}
 	
+	public void setProjectKey(String key) {
+		if (project == null)
+			project = new Project();
+		
+		project.setKey(key);
+	}
+	
 	public void setIssueTypeId(String id) {
 		if (issuetype == null)
 			issuetype = new IssueType();
