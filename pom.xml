@@ -19,9 +19,9 @@
 
 	<distributionManagement>
 		<repository>
-			<id>KTNET-Releases</id>
-			<name>KTNET Maven2 Releases</name>
-			<url>https://nexus.ktnet.com/content/repositories/releases/</url>
+			<id>Example-Releases</id>
+			<name>Example Maven2 Releases</name>
+			<url>https://nexus.example.com/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 
@@ -47,6 +47,19 @@
 			<version>${slf4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
