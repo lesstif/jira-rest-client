@@ -11,5 +11,5 @@ public class Reporter {
 	private String emailAddress;
 	private AvatarUrl avatarUrls;
 	private String displayName;
-	private boolean active;
+	private Boolean active;
 }

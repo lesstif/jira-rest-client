@@ -1,7 +1,8 @@
 package com.example.jira.project;
-import lombok.Data;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import lombok.Data;
 
 @Data
 public class AvatarUrl {
