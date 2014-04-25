@@ -1,4 +1,5 @@
 package com.example.jira.issue;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.type.TypeReference;
+import org.slf4j.Logger;
 
 import com.example.jira.Constants;
 import com.example.jira.JIRAHTTPClient;
@@ -42,7 +45,7 @@ public class IssueService {
 		
 		ClientResponse response = client.get();
 					
-		String content = (String) response.getEntity();	
+		String content = response.getEntity(String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
@@ -56,7 +59,7 @@ public class IssueService {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		//to ignore a field if its value is null
-		mapper.getSerializationConfig().withSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+		mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
 		String content = mapper.writeValueAsString(issue);
 				
 		logger.debug("Content=" + content);
@@ -65,7 +68,7 @@ public class IssueService {
 		
 		ClientResponse response = client.post(content);
 					
-		content = (String) response.getEntity();	
+		content = response.getEntity(String.class);	
 				
 		return;
 	}

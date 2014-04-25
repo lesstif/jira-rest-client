@@ -61,7 +61,7 @@ public class JIRAHTTPClient {
 		webResource = client.resource(config.getString("jira.server.url") + resourceName);
 	}
 	
-	public ClientResponse getResponse() {
+	public ClientResponse get() {
 		if (webResource == null) {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
@@ -74,26 +74,18 @@ public class JIRAHTTPClient {
 		
 		return response;
 	}
-	
-	// 
-	public List<Project> getProjectList() throws JsonParseException, JsonMappingException, IOException {
 		
-		setResourceName(Constants.JIRA_RESOURCE_PROJECT);
-		ClientResponse response = getResponse();
+	public ClientResponse post(String content) {
+		if (webResource == null) {
+			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
+		}
 		
-		String content = response.getEntity(String.class);	
+		ClientResponse response = webResource.accept("application/json").post(ClientResponse.class);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());
+		}
 		
-		TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
-		List<Project> prj = mapper.readValue(content, ref);
-		
-		return prj;
-	}
-
-	public List<Project> getIssue(String issueKey) {
-		// TODO Auto-generated method stub
-		return null;
+		return response;
 	}
 }
