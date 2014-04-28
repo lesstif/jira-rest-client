@@ -19,7 +19,7 @@ public class ProjectTest {
 		
 		int i = 0;
 		for (Project p : prj) {
-			logger.info(i++ + "th " + p );
+			logger.info(i++ + "th " + p.toPrettyJsonString() );
 		}
 	}	
 }

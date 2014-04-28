@@ -1,7 +1,7 @@
 package com.example.jira.project;
-import java.util.List;
-
 import lombok.Data;
+
+import com.example.jira.JsonPrettyString;
 
 
 /**
@@ -11,7 +11,7 @@ import lombok.Data;
  *
  */
 @Data
-public class Project {
+public class Project extends JsonPrettyString{
 	
 	private String self;
 	
@@ -20,7 +20,6 @@ public class Project {
 	
 	private String name;
 	
-	//private List<String> avatarUrls;
 	private AvatarUrl avatarUrls; 
 	private ProjectCategory projectCategory;
 }

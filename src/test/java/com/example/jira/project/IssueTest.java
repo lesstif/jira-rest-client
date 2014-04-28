@@ -23,12 +23,13 @@ public class IssueTest {
 	
 	@Test
 	public void getIssue() throws IOException, ConfigurationException {
-		String issueKey = "TEST-833";
+		String issueKey = "TEST-834";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
 
-		logger.info(issue.toString());
+		logger.info(issue.toPrettyJsonString());
+
 		// attachment info
 		List<Attachment> attachs = issue.getFields().getAttachment();
 		for ( Attachment a : attachs) 
@@ -47,6 +48,7 @@ public class IssueTest {
 		fields.setIssueTypeName(IssueType.ISSUE_TYPE_TASK);
 		fields.setDescription("Full description for issue");
 		fields.setAssigneeName("test");
+		
 		// Change Reporter need admin role
 		fields.setReporterName("rest-api");
 		fields.setPriorityName(Priority.PRIORITY_CRITICAL);
@@ -62,8 +64,10 @@ public class IssueTest {
 		logger.info(issue.toString());
 		
 		IssueService issueService = new IssueService();
-
+		
 		Issue genIssue = issueService.createIssue(issue);		
+		
+		//Print Generated issue
 		logger.info(genIssue.toPrettyJsonString());
 	}
 	
@@ -71,7 +75,7 @@ public class IssueTest {
 	public void uploadAttachments() throws IOException, ConfigurationException {
 		Issue issue = new Issue();
 		
-		issue.setKey("TEST-833");
+		issue.setKey("TEST-834");
 				
 		issue.addAttachment(new File("c:\\Users\\lesstif\\attachment.png"));
 		issue.addAttachment("c:\\Users\\lesstif\\test.pdf");
@@ -96,5 +100,15 @@ public class IssueTest {
 		List<Priority> priority =  issueService.getAllPriorities();
 
 		logger.info(priority.toString());
+	}
+	
+	@Test
+	public void getCustomeFields() throws IOException, ConfigurationException {
+		IssueService issueService = new IssueService();
+		Issue issue =  issueService.getIssue("TEST-834");
+
+		logger.info(issue.toPrettyJsonString());
+		
+		logger.info(issue.getFields().getWorklog().toPrettyJsonString());
 	}
 }

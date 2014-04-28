@@ -19,7 +19,7 @@ public class Issue extends JsonPrettyString{
 	public void addAttachment(String filePath) throws IOException {		
 		addAttachment(new File(filePath));
 	}
-
+	
 	public void addAttachment(File file) throws IOException {	
 		fields.addAttachment(file);				
 	}

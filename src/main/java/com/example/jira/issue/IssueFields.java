@@ -2,11 +2,14 @@ package com.example.jira.issue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
 
+import org.codehaus.jackson.annotate.JsonAnyGetter;
+import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonIgnoreType;
@@ -17,7 +20,7 @@ import org.joda.time.DateTime;
 import com.example.jira.project.Project;
 
 @Data
-@JsonIgnoreProperties({"lastViewed", "aggregateprogress", "worklog"
+@JsonIgnoreProperties({"lastViewed", "aggregateprogress"
 ,"timeoriginalestimate", "aggregatetimespent",
 "fileList"
 })
@@ -44,19 +47,22 @@ public class IssueFields {
 	
 	private String[] issuelinks;
 	
-	// for custom field
-	@JsonDeserialize(using=CustomFieldDeSerializer.class)
-	private Object data;
+	// for custom field	
+	private Map<String,Object> customfield;
 	
-	private String customfield_11009;
-	private String customfield_11008;
-	private String customfield_11007;
-	private String customfield_11006;
-	private String customfield_11011;
-	private String customfield_11010, customfield_10401, customfield_10404, customfield_11100, customfield_10403, customfield_11101, customfield_11003, customfield_11002;
-	private String customfield_11005, customfield_11004, customfield_11001, customfield_11000, customfield_10602, customfield_10601, customfield_10600;
-	private String customfield_10502, customfield_10501, customfield_10702, customfield_10700;
+	@JsonAnyGetter
+	public Map<String,Object> getCustomfield(){ 
+		return this.customfield; 
+	}
 	
+	@JsonAnySetter
+	public void setCustomfield(String key,Object value){ 
+		if (this.customfield == null)
+			this.customfield = new HashMap<String, Object>();
+		
+		this.customfield.put(key, value); 
+	}
+		
 	private String[] subtasks;
 	private Status status;
 	
@@ -83,7 +89,7 @@ public class IssueFields {
 	private DateTime duedate;
 	
 	private Map<String, String> watches;
-	private Map<String, String> worklog;
+	private Worklog worklog;
 	
 	private Reporter assignee;
 	
