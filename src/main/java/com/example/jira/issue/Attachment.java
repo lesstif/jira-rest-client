@@ -22,7 +22,7 @@ import com.sun.jersey.core.util.Base64;
  * @author lesstif
  *
  */
-public class Attachment extends JsonPrettyString{
+public class Attachment extends JsonPrettyString{	
 	private String id;
 	private String self;
 	private String filename;
@@ -34,14 +34,4 @@ public class Attachment extends JsonPrettyString{
 	private String mimeType;
 	private String content;
 	private String thumbnail;
-	
-	@JsonIgnore
-	private byte[] contentData;
-	
-	public void addAttachment(File file) throws IOException {
-		if (file.exists()) {
-			contentData = Base64.encode(FileUtils.readFileToByteArray(file));
-		}		
-	}	
-	
 }
