@@ -1,9 +1,11 @@
 package com.example.jira.issue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -16,6 +18,9 @@ import com.example.jira.Constants;
 import com.example.jira.JIRAHTTPClient;
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.multipart.BodyPart;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.MultiPart;
 
 import lombok.Data;
 
@@ -52,7 +57,7 @@ public class IssueService {
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
 		TypeReference<Issue> ref = new TypeReference<Issue>(){};
 		issue = mapper.readValue(content, ref);
-		
+				
 		return issue;
 	}	
 	
@@ -75,7 +80,26 @@ public class IssueService {
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<Issue> ref = new TypeReference<Issue>(){};
         
-		return mapper.readValue(content, ref);
+        Issue resIssue = mapper.readValue(content, ref); 
+
+        // Add one or more attachments to an issue.
+        List<Attachment> attachs = issue.getFields().getAttachment();
+     	if (attachs != null && attachs.size() > 0 ) {
+     		//MultiPart multiPart = new MultiPart();
+     		MultiPart form = new FormDataMultiPart();
+     		for (int i = 0; i < attachs.size(); i++) {
+	    		
+	    		BodyPart bodyPart = new BodyPart();	
+	    	    bodyPart.setEntity(attachs.get(i).getContentData());
+	    	    	    	    
+	    	    form.bodyPart(bodyPart);
+     		}
+     		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + resIssue.getId() + "/attachments");
+    		
+    		response = client.post(content);
+     	}
+     		
+     	return resIssue;
 	}
 	
 	/**

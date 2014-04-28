@@ -1,5 +1,6 @@
 package com.example.jira.issue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -144,5 +145,12 @@ public class IssueFields {
 			priority = new Priority();
 
 		priority.setName(name);		
+	}
+
+	public void addAttachment(Attachment attachment) {
+		if (this.attachment == null)
+			this.attachment = new ArrayList<Attachment>();
+			
+		this.attachment.add(attachment);		
 	}
 }
