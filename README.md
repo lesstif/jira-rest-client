@@ -14,16 +14,19 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
     * List all Projects
 * Issues
     * Get Issue by Issue Key
+    * Get All Issue type
+    * Create Issue
+    * Attachment upload/download
 
 ## TODO ##
-* Processing custom field (customfield_xxxxxx)
+* 
 
 ## Maven Dependency ##
 ```xml
     <dependency>
       <groupId>com.example</groupId>
       <artifactId>jira-rest-client</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
 ```
 
@@ -31,21 +34,6 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 ### print  All Projects ###
 ```java
-
-package com.example.jira.project;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ProjectTest {
-
-	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Test
 	public void listProject() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
@@ -55,26 +43,28 @@ public class ProjectTest {
 		
 		int i = 0;
 		for (Project p : prj) {
-			logger.info(i++ + "th " + p );
+			System.out.println(i++ + "th " + p.toPrettyJsonString() );
 		}
 	}	
-}
 
 ```
 
 ### Get Issue by Issue-Key ###
 ```java
 
-@Test
-	public void getIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
-		String issueKey = 
-				//"TEST-824";
-				"NCA-208";
+    @Test
+	public void getIssue() throws IOException, ConfigurationException {
+		String issueKey = "TEST-833";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
 
-		logger.info(issue.toString());
+		logger.info(issue.toPrettyJsonString());
+
+		// attachment info
+		List<Attachment> attachs = issue.getFields().getAttachment();
+		for ( Attachment a : attachs) 
+			logger.info(a.toPrettyJsonString());
 	}
 
 ```
@@ -84,23 +74,78 @@ public class ProjectTest {
 
 public void createIssue() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
 
-		Issue issue = new Issue();
+	Issue issue = new Issue();
 		
 		IssueFields fields = new IssueFields();
 		
-		fields.setProjectId("10000");
+		fields.setProjectKey("TEST");
 		fields.setSummary("something's wrong");
-		fields.setIssueTypeId("10000");
-		fields.setAssigneeName("test1");
-		fields.setReporterName("lesstif");
-		fields.setPriorityId("123");
+		fields.setIssueTypeName(IssueType.ISSUE_TYPE_TASK);
+		fields.setDescription("Full description for issue");
+		fields.setAssigneeName("test");
+		
+		// Change Reporter need admin role
+		fields.setReporterName("rest-api");
+		fields.setPriorityName(Priority.PRIORITY_CRITICAL);
 		fields.setLabels(new String[]{"bugfix","blitz_test"});
+			
+		fields.setComponents(Arrays.asList(new Component[]{new Component("Component-1"), new Component("Component-2")}));
+		
+		fields.addAttachment("c:\\Users\\lesstif\\test.pdf");
+		fields.addAttachment("c:\\Users\\lesstif\\attachment.png");
+		
+		issue.setFields(fields);
 		
 		logger.info(issue.toString());
 		
 		IssueService issueService = new IssueService();
-
-		issueService.createIssue(issue);		
+		
+		Issue genIssue = issueService.createIssue(issue);		
+		
+		//Print Generated issue
+		logger.info(genIssue.toPrettyJsonString());
 	}
 
+```
+
+### Upload attachment After Issue Created ###
+```java
+
+public void uploadAttachments() throws IOException, ConfigurationException {
+
+		Issue issue = new Issue();
+		
+		issue.setKey("TEST-834");
+				
+		issue.addAttachment(new File("c:\\Users\\lesstif\\attachment.png"));
+		issue.addAttachment("c:\\Users\\lesstif\\test.pdf");
+		
+		IssueService issueService = new IssueService();
+		issueService.postAttachment(issue);
+	}
+	
+```
+
+### print all Issue Priority Type ###
+```java
+
+public void getAllPriorities() throws IOException, ConfigurationException {
+
+
+		IssueService issueService = new IssueService();
+		List<Priority> priority =  issueService.getAllPriorities();
+
+		logger.info(priority.toString());
+	}
+```
+
+### print all Custom Field in the Issue ###
+```java
+
+    public void getCustomeFields() throws IOException, ConfigurationException {
+		IssueService issueService = new IssueService();
+		Issue issue =  issueService.getIssue("TEST-834");
+
+		logger.info(issue.getFields().getCustomfield().toString());		
+	}
 ```
