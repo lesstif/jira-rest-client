@@ -2,6 +2,7 @@ package com.example.jira;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -26,6 +27,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.multipart.BodyPart;
 import com.sun.jersey.multipart.MultiPart;
 
@@ -101,9 +103,9 @@ public class JIRAHTTPClient {
 		if (webResource == null) {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
-						
+ 		
 		ClientResponse response = webResource
-				.header("X-Atlassian-Token:", "nocheck")
+				.header("X-Atlassian-Token", "nocheck")
 				.type(MediaType.MULTIPART_FORM_DATA)
 				.post(ClientResponse.class, multiPart);
 		

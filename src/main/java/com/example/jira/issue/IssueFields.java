@@ -1,11 +1,13 @@
 package com.example.jira.issue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonIgnoreType;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
@@ -16,7 +18,8 @@ import com.example.jira.project.Project;
 
 @Data
 @JsonIgnoreProperties({"lastViewed", "aggregateprogress", "worklog"
-,"timeoriginalestimate", "aggregatetimespent"
+,"timeoriginalestimate", "aggregatetimespent",
+"fileList"
 })
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class IssueFields {
@@ -86,6 +89,8 @@ public class IssueFields {
 	
 	private List<Attachment> attachment;
 	
+	private	List<File>	fileList;
+	
 	private DateTime aggregatetimeestimate;
 	
 	private List<Version> versions;
@@ -147,10 +152,14 @@ public class IssueFields {
 		priority.setName(name);		
 	}
 
-	public void addAttachment(Attachment attachment) {
-		if (this.attachment == null)
-			this.attachment = new ArrayList<Attachment>();
+	public void addAttachment(String filePath) {
+		addAttachment(new File(filePath));		
+	}
+
+	public void addAttachment(File file) {			
+		if (this.fileList == null)
+			this.fileList = new ArrayList<File>();
 			
-		this.attachment.add(attachment);		
+		fileList.add(file);
 	}
 }

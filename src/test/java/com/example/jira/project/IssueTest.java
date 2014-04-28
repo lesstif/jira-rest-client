@@ -54,6 +54,9 @@ public class IssueTest {
 			
 		fields.setComponents(Arrays.asList(new Component[]{new Component("Component-1"), new Component("Component-2")}));
 		
+		fields.addAttachment("c:\\Users\\lesstif\\test.pdf");
+		fields.addAttachment("c:\\Users\\lesstif\\attachment.png");
+		
 		issue.setFields(fields);
 		
 		logger.info(issue.toString());
@@ -65,15 +68,16 @@ public class IssueTest {
 	}
 	
 	@Test
-	public void uploadAttachments() throws IOException {
+	public void uploadAttachments() throws IOException, ConfigurationException {
 		Issue issue = new Issue();
 		
 		issue.setKey("TEST-833");
 				
-		issue.addAttachment(new File("attachment.png"));
-		issue.addAttachment("c:\\test.pdf");
+		issue.addAttachment(new File("c:\\Users\\lesstif\\attachment.png"));
+		issue.addAttachment("c:\\Users\\lesstif\\test.pdf");
 		
-		issue.uploadAttachment();
+		IssueService issueService = new IssueService();
+		issueService.postAttachment(issue);
 	}
 	
 	@Test

@@ -1,8 +1,12 @@
 package com.example.jira.issue;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
@@ -18,9 +22,13 @@ import com.example.jira.Constants;
 import com.example.jira.JIRAHTTPClient;
 import com.example.jira.project.Project;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.header.ContentDisposition;
+import com.sun.jersey.core.header.ContentDisposition.ContentDispositionBuilder;
+import com.sun.jersey.core.provider.EntityHolder;
 import com.sun.jersey.multipart.BodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.MultiPart;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 import lombok.Data;
 
@@ -81,22 +89,10 @@ public class IssueService {
         TypeReference<Issue> ref = new TypeReference<Issue>(){};
         
         Issue resIssue = mapper.readValue(content, ref); 
-
-        // Add one or more attachments to an issue.
-        List<Attachment> attachs = issue.getFields().getAttachment();
-     	if (attachs != null && attachs.size() > 0 ) {
-     		//MultiPart multiPart = new MultiPart();
-     		MultiPart form = new FormDataMultiPart();
-     		for (int i = 0; i < attachs.size(); i++) {
-	    		
-	    		BodyPart bodyPart = new BodyPart();	
-	    	    bodyPart.setEntity(attachs.get(i).getContentData());
-	    	    	    	    
-	    	    form.bodyPart(bodyPart);
-     		}
-     		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + resIssue.getId() + "/attachments");
-    		
-    		response = client.post(content);
+                
+        if(issue.hasAttachments()) {
+     		issue.setId(resIssue.getId());
+     		postAttachment(issue);
      	}
      		
      	return resIssue;
@@ -137,6 +133,47 @@ public class IssueService {
 		List<Priority> priorities = mapper.readValue(content, ref);
 						
 		return priorities;
+	}
+
+	/**
+	 * Add one or more attachments to an issue.
+	 * @param issue
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 */
+	public List<Attachment> postAttachment(Issue issue) throws JsonParseException, JsonMappingException, IOException {
+        List<File> files = issue.getFields().getFileList();
+        
+        if (files == null || files.size() == 0 )
+        	throw new IllegalStateException("Oops! Attachment Not Found.");
+        	
+        if ( (issue.getId() == null || issue.getId().isEmpty()) &&
+        		(issue.getKey() == null || issue.getKey().isEmpty()) )
+        	throw new IllegalStateException("Oops! Issue id or Key not set.");
+
+        String idOrKey = issue.getId() == null ? issue.getKey() : issue.getId();
+        
+        FormDataMultiPart form = new FormDataMultiPart();
+ 		for (int i = 0; i < files.size(); i++) {
+ 			// The name of the multipart/form-data parameter that contains attachments must be "file"
+    	    FileDataBodyPart fdp = new FileDataBodyPart("file", files.get(i));
+    	    
+    	    form.bodyPart(fdp);
+ 		}
+		 
+ 		client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + idOrKey + "/attachments");
+		
+ 		ClientResponse response = client.postMultiPart(form);     	
+ 		String content = response.getEntity(String.class);
+ 		
+ 		ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);		
+        
+        TypeReference<List<Attachment>> ref = new TypeReference<List<Attachment>>(){};
+		List<Attachment> res = mapper.readValue(content, ref);
+		
+		return res;
 	}
 	
 }

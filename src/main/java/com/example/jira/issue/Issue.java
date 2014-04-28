@@ -3,12 +3,9 @@ package com.example.jira.issue;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
+import lombok.Data;
 
 import com.example.jira.JsonPrettyString;
-import com.sun.jersey.core.util.Base64;
-
-import lombok.Data;
 
 @Data
 public class Issue extends JsonPrettyString{
@@ -17,18 +14,24 @@ public class Issue extends JsonPrettyString{
 	private String self;
 	private String key;
 	
-	private IssueFields fields;
+	private IssueFields fields = new IssueFields();
 
 	public void addAttachment(String filePath) throws IOException {		
 		addAttachment(new File(filePath));
 	}
 
-	public void addAttachment(File file) throws IOException {
-		if (file.exists()) {
-			Attachment attachment = new Attachment();
-			attachment.setContentData(Base64.encode(FileUtils.readFileToByteArray(file)));
-			
-			fields.addAttachment(attachment);
-		}		
+	public void addAttachment(File file) throws IOException {	
+		fields.addAttachment(file);				
+	}
+
+	/**
+	 * check attachment exist 
+	 * @return
+	 */
+	public boolean hasAttachments() {
+		if (fields.getFileList() != null && fields.getFileList().size() > 0)
+			return true;
+		
+		return false;
 	}
 }
