@@ -107,8 +107,6 @@ public class IssueTest {
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue("TEST-834");
 
-		logger.info(issue.toPrettyJsonString());
-		
-		logger.info(issue.getFields().getWorklog().toPrettyJsonString());
+		logger.info(issue.getFields().getCustomfield().toString());		
 	}
 }
