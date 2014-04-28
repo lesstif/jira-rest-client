@@ -1,4 +1,5 @@
 package com.example.jira.project;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +61,19 @@ public class IssueTest {
 		IssueService issueService = new IssueService();
 
 		Issue genIssue = issueService.createIssue(issue);		
-		logger.info(genIssue.toString());
+		logger.info(genIssue.toPrettyJsonString());
+	}
+	
+	@Test
+	public void uploadAttachments() throws IOException {
+		Issue issue = new Issue();
+		
+		issue.setKey("TEST-833");
+				
+		issue.addAttachment(new File("attachment.png"));
+		issue.addAttachment("c:\\test.pdf");
+		
+		issue.uploadAttachment();
 	}
 	
 	@Test
