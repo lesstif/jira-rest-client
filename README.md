@@ -32,6 +32,8 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 ## Example ##
 
+Edit src/main/resources/jira-rest-client.properties and replace 'jira.server.url', 'jira.user.id', 'jira.user.pwd' with your jira environment. 
+
 ### print  All Projects ###
 ```java
 	
