@@ -92,7 +92,8 @@ public class IssueService {
                 
         if(issue.hasAttachments()) {
      		issue.setId(resIssue.getId());
-     		postAttachment(issue);
+     		List<Attachment> attachment = postAttachment(issue);
+     		resIssue.getFields().setAttachment(attachment);
      	}
      		
      	return resIssue;
