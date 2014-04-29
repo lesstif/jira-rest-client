@@ -1,14 +1,22 @@
 package com.example.jira;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.StatusType;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
+import com.example.jira.project.Project;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -19,6 +27,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.core.header.ContentDisposition;
+import com.sun.jersey.multipart.BodyPart;
 import com.sun.jersey.multipart.MultiPart;
 
 public class JIRAHTTPClient {
@@ -30,38 +40,11 @@ public class JIRAHTTPClient {
 		
 	private PropertiesConfiguration config = null;
 	
-	private final static String CONFIG_FILE = "jira-rest-client.properties";
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
 	public JIRAHTTPClient() throws ConfigurationException {
 		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
 		org.slf4j.bridge.SLF4JBridgeHandler.install();
 		
-		// search properties, in this order.
-		// #1. specified system property (run jvm with -Djira.client.property=absolute_config_path)
-		// #2. current directory
-		// #3. in the library jar(jira-rest-api.jar)		
-		
-		File f = null;
-		if (System.getProperty("jira.client.property") != null)
-			f = new File(System.getProperty("jira.client.property"));
-		
-		if (f != null && f.exists()) {
-			logger.info("Using Configuration " + f.getAbsolutePath());
-			config = new PropertiesConfiguration(f);
-		} else {
-			f = new File(new File("."), CONFIG_FILE);
-			if (f.exists()) {
-				logger.info("Using Configuration " + f.getAbsolutePath());
-				config = new PropertiesConfiguration(f);
-			}
-			else {
-				logger.info("Using default Configuration");
-				config = new PropertiesConfiguration(CONFIG_FILE);
-			}
-		}		
-		
+		config = new PropertiesConfiguration("jira-rest-client.properties");
 		clientConfig = new DefaultClientConfig();
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
 		

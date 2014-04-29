@@ -28,7 +28,7 @@
 	<logger name="org.springframework" level="INFO"/>
 	
 	<!-- turn OFF all logging (children can override) -->
-	<root level="DEBUG">
+	<root level="TRACE">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
