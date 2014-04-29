@@ -2,11 +2,14 @@ package com.example.jira.issue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
-import lombok.Data;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -17,9 +20,17 @@ import org.slf4j.Logger;
 
 import com.example.jira.Constants;
 import com.example.jira.JIRAHTTPClient;
+import com.example.jira.project.Project;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.header.ContentDisposition;
+import com.sun.jersey.core.header.ContentDisposition.ContentDispositionBuilder;
+import com.sun.jersey.core.provider.EntityHolder;
+import com.sun.jersey.multipart.BodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
+import com.sun.jersey.multipart.MultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
+
+import lombok.Data;
 
 
 /**
