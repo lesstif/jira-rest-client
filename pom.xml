@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ktnet</groupId>
 	<artifactId>jira-rest-api</artifactId>
-	<version>0.5</version>
+	<version>0.5.1</version>
 
 	<properties>
 		<!-- Generic properties -->
@@ -19,7 +19,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>ktnet-Releases</id>
+			<id>Releases-repos</id>
 			<name>Example Maven2 Releases</name>
 			<url>https://nexus.ktnet.com/content/repositories/releases/</url>
 		</repository>
@@ -30,6 +30,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -65,18 +66,6 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
 			<scope>runtime</scope>
-		</dependency>
-			<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

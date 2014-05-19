@@ -47,7 +47,7 @@ public class IssueTest {
 		fields.setSummary("something's wrong");
 		fields.setIssueTypeName(IssueType.ISSUE_TYPE_TASK);
 		fields.setDescription("Full description for issue");
-		fields.setAssigneeName("test");
+		fields.setAssigneeName("lesstif");
 		
 		// Change Reporter need admin role
 		fields.setReporterName("rest-api");
@@ -61,7 +61,7 @@ public class IssueTest {
 		
 		issue.setFields(fields);
 		
-		logger.info(issue.toString());
+		logger.info(issue.toPrettyJsonString());
 		
 		IssueService issueService = new IssueService();
 		
