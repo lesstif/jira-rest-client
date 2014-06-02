@@ -14,6 +14,6 @@ public class Version {
 	private Boolean released;
 	private DateTime releaseDate;
 	private Boolean overdue;
-	private DateTime userReleaseDate;
+	private String userReleaseDate;
 	private String projectId;	 
 }
