@@ -23,7 +23,7 @@ public class IssueTest {
 	
 	@Test
 	public void getIssue() throws IOException, ConfigurationException {
-		String issueKey = "TEST-834";
+		String issueKey = "TEST-857";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
@@ -34,6 +34,14 @@ public class IssueTest {
 		List<Attachment> attachs = issue.getFields().getAttachment();
 		for ( Attachment a : attachs) 
 			logger.info(a.toPrettyJsonString());
+		
+		IssueFields fields = issue.getFields();
+		// 프로젝트키
+		String prjKey =fields.getProject().getKey();
+		//이슈 타입
+		IssueType issueType = fields.getIssuetype();
+		// 이슈 상세내역
+		String desc = fields.getDescription();
 	}
 	
 	@Test
