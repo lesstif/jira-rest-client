@@ -45,4 +45,23 @@ public class ProjectService {
 		
 		return prj;
 	}
+	
+	// get Full project Information
+	public Project getProjectDetail(String idOrKey) throws IOException {
+		if (client == null)
+			throw new IllegalStateException("HTTP Client not Initailized");
+		
+		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT + "/" + idOrKey);
+		ClientResponse response = client.get();
+					
+		String content = response.getEntity(String.class);	
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+		
+		TypeReference<Project> ref = new TypeReference<Project>(){};
+		Project prj = mapper.readValue(content, ref);
+		
+		return prj;
+	}
 }

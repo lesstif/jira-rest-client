@@ -27,4 +27,6 @@ public class Component {
 	private Map<String, String> lead;
 	private String displayName;
 	private Boolean active;
+	
+	private Boolean isAssigneeTypeValid;
 }

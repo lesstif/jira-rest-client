@@ -23,7 +23,7 @@ public class IssueTest {
 	
 	@Test
 	public void getIssue() throws IOException, ConfigurationException {
-		String issueKey = "TEST-834";
+		String issueKey = "TEST-857";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
@@ -34,6 +34,14 @@ public class IssueTest {
 		List<Attachment> attachs = issue.getFields().getAttachment();
 		for ( Attachment a : attachs) 
 			logger.info(a.toPrettyJsonString());
+		
+		IssueFields fields = issue.getFields();
+		// 프로젝트키
+		String prjKey =fields.getProject().getKey();
+		//이슈 타입
+		IssueType issueType = fields.getIssuetype();
+		// 이슈 상세내역
+		String desc = fields.getDescription();
 	}
 	
 	@Test
@@ -47,7 +55,7 @@ public class IssueTest {
 		fields.setSummary("something's wrong");
 		fields.setIssueTypeName(IssueType.ISSUE_TYPE_TASK);
 		fields.setDescription("Full description for issue");
-		fields.setAssigneeName("test");
+		fields.setAssigneeName("lesstif");
 		
 		// Change Reporter need admin role
 		fields.setReporterName("rest-api");
@@ -61,7 +69,7 @@ public class IssueTest {
 		
 		issue.setFields(fields);
 		
-		logger.info(issue.toString());
+		logger.info(issue.toPrettyJsonString());
 		
 		IssueService issueService = new IssueService();
 		
