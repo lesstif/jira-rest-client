@@ -22,4 +22,13 @@ public class ProjectTest {
 			logger.info(i++ + "th " + p.toPrettyJsonString() );
 		}
 	}	
+	
+	@Test
+	public void getProject() throws IOException, ConfigurationException {
+		ProjectService prjService = new ProjectService();
+		
+		Project prj = prjService.getProjectDetail("TEST");
+		
+		logger.info("getIssueType=" + prj.getIssueTypes());
+	}	
 }
