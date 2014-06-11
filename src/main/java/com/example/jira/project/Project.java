@@ -2,6 +2,7 @@ package com.example.jira.project;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.joda.time.DateTime;
 
 import lombok.Data;
 
@@ -30,6 +31,9 @@ public class Project extends JsonPrettyString{
 	
 	private String description;
 	private String name;
+	private String url;
+	
+	private DateTime startDate;
 	
 	private Lead lead;
 	
