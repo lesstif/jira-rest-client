@@ -1,9 +1,11 @@
 package com.lesstif.jira.issue;
 
+import com.lesstif.jira.JsonPrettyString;
+
 import lombok.Data;
 
 @Data
-public class IssueType {
+public class IssueType extends JsonPrettyString {
 	// Default issue type
 	public static final String ISSUE_TYPE_BUG = "Bug";
 	public static final String ISSUE_TYPE_TASK = "Task";

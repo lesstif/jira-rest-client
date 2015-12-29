@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
@@ -33,16 +34,19 @@ public class IssueTest {
 		// attachment info
 		List<Attachment> attachs = issue.getFields().getAttachment();
 		for ( Attachment a : attachs) {
-			logger.info("Attachment:" + a.toPrettyJsonString());			
+			logger.debug("Attachment:" + a.toPrettyJsonString());			
 		}
 		
 		IssueFields fields = issue.getFields();
-		// 프로젝트키
-		String prjKey =fields.getProject().getKey();
-		//이슈 타입
-		IssueType issueType = fields.getIssuetype();
-		// 이슈 상세내역
-		String desc = fields.getDescription();
+		
+		// Project key
+		logger.debug("Project Key:" + fields.getProject().getKey());
+				
+		//issue type
+		logger.debug("IssueType:" + fields.getIssuetype().toPrettyJsonString());
+		
+		// issue description
+		logger.debug("Issue Description:" + fields.getDescription());		
 	}
 	
 	@Test
@@ -100,7 +104,9 @@ public class IssueTest {
 		IssueService issueService = new IssueService();
 		List<IssueType> issueTypes =  issueService.getAllIssueTypes();
 
-		logger.info(issueTypes.toString());
+		for(IssueType i : issueTypes) {
+			logger.info(i.toPrettyJsonString());
+		}
 	}
 	
 	@Test
@@ -109,14 +115,20 @@ public class IssueTest {
 		IssueService issueService = new IssueService();
 		List<Priority> priority =  issueService.getAllPriorities();
 
-		logger.info(priority.toString());
+		for(Priority p : priority) {
+			logger.info(p.toPrettyJsonString());
+		}
 	}
 	
 	@Test
 	public void getCustomeFields() throws IOException, ConfigurationException {
 		IssueService issueService = new IssueService();
-		Issue issue =  issueService.getIssue("TEST-834");
+		Issue issue =  issueService.getIssue("TEST-92");
 
-		logger.info(issue.getFields().getCustomfield().toString());		
+		Map<String, Object> fields = issue.getFields().getCustomfield();
+		
+		for( String key : fields.keySet() ){
+			logger.info("Field Name: " + key + ",value:" + fields.get(key));
+		}
 	}
 }

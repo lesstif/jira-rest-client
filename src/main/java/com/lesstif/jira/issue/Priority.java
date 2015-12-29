@@ -1,9 +1,11 @@
 package com.lesstif.jira.issue;
 
+import com.lesstif.jira.JsonPrettyString;
+
 import lombok.Data;
 
 @Data
-public class Priority {
+public class Priority extends JsonPrettyString {
 	public static final String PRIORITY_BLOCKER = "Blocker";
 	public static final String PRIORITY_CRITICAL = "Critical";
 	public static final String PRIORITY_MAJOR = "Major";

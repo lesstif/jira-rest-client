@@ -32,6 +32,6 @@ public class ProjectTest {
 		
 		Project prj = prjService.getProjectDetail("TEST");
 		
-		logger.info("getIssueType=" + prj.getIssueTypes());
+		logger.info("P=" + prj.toPrettyJsonString());
 	}	
 }

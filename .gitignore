@@ -103,3 +103,5 @@ buildNumber.properties
 
 ## app property
 jira-rest-client.properties
+bug-description.pdf
+screen_capture.png
