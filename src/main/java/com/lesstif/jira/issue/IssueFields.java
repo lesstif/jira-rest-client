@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.codehaus.jackson.annotate.JsonAnySetter;
@@ -22,6 +23,7 @@ import com.lesstif.jira.project.Project;
 "fileList"
 })
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@Accessors(chain=true)
 public class IssueFields {
 	private Project  project;
 	private String summary;
@@ -53,11 +55,13 @@ public class IssueFields {
 	}
 	
 	@JsonAnySetter
-	public void setCustomfield(String key,Object value){ 
+	public IssueFields setCustomfield(String key,Object value){ 
 		if (this.customfield == null)
 			this.customfield = new HashMap<String, Object>();
 		
-		this.customfield.put(key, value); 
+		this.customfield.put(key, value);
+		
+		return this;
 	}
 		
 	private String[] subtasks;
@@ -101,68 +105,88 @@ public class IssueFields {
 	private Integer timeestimate;
 	
 	// Helper method
-	public void setProjectId(String id) {
+	public IssueFields setProjectId(String id) {
 		if (project == null)
 			project = new Project();
 		
 		project.setId(id);
+		
+		return this;
 	}
 	
-	public void setProjectKey(String key) {
+	public IssueFields setProjectKey(String key) {
 		if (project == null)
 			project = new Project();
 		
 		project.setKey(key);
+		
+		return this;
 	}
 	
-	public void setIssueTypeId(String id) {
+	public IssueFields setIssueTypeId(String id) {
 		if (issuetype == null)
 			issuetype = new IssueType();
 		issuetype.setId(id);
+		
+		return this;
 	}
 	
-	public void setIssueTypeName(String name) {
+	public IssueFields setIssueTypeName(String name) {
 		if (issuetype == null)
 			issuetype = new IssueType();
 		issuetype.setName(name);
+		
+		return this;
 	}
 	
-	public void setAssigneeName(String name) {
+	public IssueFields setAssigneeName(String name) {
 		if (assignee == null)
 			assignee = new Reporter();
 
 		assignee.setName(name);
+		
+		return this;
 	}
 	
-	public void setReporterName(String name) {
+	public IssueFields setReporterName(String name) {
 		if (reporter == null)
 			reporter = new Reporter();
 
 		reporter.setName(name);
+		
+		return this;
 	}
 
-	public void setPriorityId(String id) {
+	public IssueFields setPriorityId(String id) {
 		if (priority == null)
 			priority = new Priority();
 
-		priority.setId(id);		
+		priority.setId(id);
+		
+		return this;		
 	}
 	
-	public void setPriorityName(String name) {
+	public IssueFields setPriorityName(String name) {
 		if (priority == null)
 			priority = new Priority();
 
-		priority.setName(name);		
+		priority.setName(name);
+		
+		return this;
 	}
 
-	public void addAttachment(String filePath) {
-		addAttachment(new File(filePath));		
+	public IssueFields addAttachment(String filePath) {
+		addAttachment(new File(filePath));
+
+		return this;
 	}
 
-	public void addAttachment(File file) {			
+	public IssueFields addAttachment(File file) {			
 		if (this.fileList == null)
 			this.fileList = new ArrayList<File>();
 			
 		fileList.add(file);
+		
+		return this;
 	}
 }

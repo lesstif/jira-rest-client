@@ -34,6 +34,8 @@ public class JIRAHTTPClient {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
+	private final String API_URL = "/rest/api/2/";
+	
 	public JIRAHTTPClient() throws ConfigurationException {
 		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
 		org.slf4j.bridge.SLF4JBridgeHandler.install();
@@ -89,7 +91,7 @@ public class JIRAHTTPClient {
 	 * @param url
 	 */
 	public void setResourceName(String resourceName) {
-		webResource = client.resource(config.getString("jira.server.url") + resourceName);
+		webResource = client.resource(config.getString("jira.server.url") + API_URL + resourceName);
 	}
 	
 	public ClientResponse get() {
