@@ -18,6 +18,3 @@ target/
 hs_err_pid*
 jira-rest-client.log
 jira-rest-client.log*
-
-## app property
-jira-rest-client.properties
