@@ -47,10 +47,10 @@ public class IssueFields {
 	private String[] issuelinks;
 	
 	// for custom field	
-	private Map<String,Object> customfield;
+	private Map<String,Object> customfield = new HashMap<String, Object>();
 	
 	@JsonAnyGetter
-	public Map<String,Object> getCustomfield(){ 
+	public Map<String,Object> getCustomfield(){
 		return this.customfield; 
 	}
 	
