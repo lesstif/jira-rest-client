@@ -22,7 +22,7 @@ public class Attachment extends JsonPrettyString{
 	private DateTime created;
 	
 	private Integer size;
-	private String mimeType;
+	private String mimeType;	
 	private String content;
 	private String thumbnail;
 }

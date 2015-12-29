@@ -16,12 +16,16 @@ public class Issue extends JsonPrettyString{
 	
 	private IssueFields fields = new IssueFields();
 
-	public void addAttachment(String filePath) throws IOException {		
+	public Issue addAttachment(String filePath) throws IOException {		
 		addAttachment(new File(filePath));
+		
+		return this;
 	}
 	
-	public void addAttachment(File file) throws IOException {	
-		fields.addAttachment(file);				
+	public Issue addAttachment(File file) throws IOException {	
+		fields.addAttachment(file);	
+		
+		return this;
 	}
 
 	/**

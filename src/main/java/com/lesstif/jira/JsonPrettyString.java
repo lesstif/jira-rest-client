@@ -6,6 +6,10 @@ import java.io.StringWriter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
+/**
+ * class to json string formatter
+ *
+ */
 public class JsonPrettyString {
 	
 	final public String toPrettyJsonString() {

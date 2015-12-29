@@ -23,17 +23,18 @@ public class IssueTest {
 	
 	@Test
 	public void getIssue() throws IOException, ConfigurationException {
-		String issueKey = "TEST-857";
+		String issueKey = "TEST-92";
 
 		IssueService issueService = new IssueService();
 		Issue issue =  issueService.getIssue(issueKey);
 
-		logger.info(issue.toPrettyJsonString());
+		logger.debug(issue.toPrettyJsonString());
 
 		// attachment info
 		List<Attachment> attachs = issue.getFields().getAttachment();
-		for ( Attachment a : attachs) 
-			logger.info(a.toPrettyJsonString());
+		for ( Attachment a : attachs) {
+			logger.info("Attachment:" + a.toPrettyJsonString());			
+		}
 		
 		IssueFields fields = issue.getFields();
 		// 프로젝트키
@@ -51,21 +52,22 @@ public class IssueTest {
 		
 		IssueFields fields = new IssueFields();
 		
-		fields.setProjectKey("TEST");
-		fields.setSummary("something's wrong");
-		fields.setIssueTypeName(IssueType.ISSUE_TYPE_TASK);
-		fields.setDescription("Full description for issue");
-		fields.setAssigneeName("lesstif");
+		fields.setProjectKey("TEST")
+			  .setSummary("something's wrong")
+			  .setIssueTypeName(IssueType.ISSUE_TYPE_TASK)
+			  .setDescription("Full description for issue")
+			  .setAssigneeName("lesstif");
 		
 		// Change Reporter need admin role
-		fields.setReporterName("rest-api");
-		fields.setPriorityName(Priority.PRIORITY_CRITICAL);
-		fields.setLabels(new String[]{"bugfix","blitz_test"});
-			
-		fields.setComponents(Arrays.asList(new Component[]{new Component("Component-1"), new Component("Component-2")}));
-		
-		fields.addAttachment("c:\\Users\\lesstif\\test.pdf");
-		fields.addAttachment("c:\\Users\\lesstif\\attachment.png");
+		fields.setReporterName("gitlab")
+			.setPriorityName(Priority.PRIORITY_CRITICAL)
+			.setLabels(new String[]{"bugfix","blitz_test"})			
+			.setComponents(Arrays.asList(
+					new Component[]{new Component("Component-1"), new Component("Component-2")})
+					)
+			.addAttachment("readme.md")
+			.addAttachment("bug-description.pdf")
+			.addAttachment("screen_capture.png");
 		
 		issue.setFields(fields);
 		
