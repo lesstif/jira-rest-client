@@ -22,13 +22,13 @@
 		<connection>scm:git:git@github.com:lesstif/jira-rest-client.git</connection>
 		<developerConnection>scm:git:git@github.com:lesstif/jira-rest-client.git</developerConnection>
 	</scm>
-	<distributionManagement>
+	<distributionManagement>	
 		<snapshotRepository>
-			<id>ossrh-snapshot</id>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>ossrh-release</id>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
