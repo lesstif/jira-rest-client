@@ -8,16 +8,18 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 # Installation
 
-1. add this dependency snippet into pom.xml. 
+1. check latest released artifact version from Sonatype OSPRH(Open Source Project Repository Hosting) repository.	(https://oss.sonatype.org/content/groups/public/com/lesstif/jira-rest-api/)  
+
+2. add this dependency snippet into pom.xml. 
 	```xml
 	    <dependency>
 	      <groupId>com.lesstif</groupId>
 	      <artifactId>jira-rest-client</artifactId>
-	      <version>0.7.0</version>
+	      <version>EDIT_THIS</version>
 	    </dependency>
 	```
 
-2. create *jira-rest-client.properties* file into directory in the CLASS PATH variable and set your jira host and auth infos.    
+3. create *jira-rest-client.properties* file into directory in the CLASS PATH variable and set your jira host and auth infos.    
 	```
 	JIRA_HOST="https://your-jira.host.com"
 	JIRA_USER="jira-username"
