@@ -89,10 +89,10 @@ public class IssueTest {
 	public void uploadAttachments() throws IOException, ConfigurationException {
 		Issue issue = new Issue();
 		
-		issue.setKey("TEST-834");
+		issue.setKey("TEST-92");
 				
-		issue.addAttachment(new File("c:\\Users\\lesstif\\attachment.png"));
-		issue.addAttachment("c:\\Users\\lesstif\\test.pdf");
+		issue.addAttachment(new File("attachment.png"));
+		issue.addAttachment("test.pdf");
 		
 		IssueService issueService = new IssueService();
 		issueService.postAttachment(issue);
