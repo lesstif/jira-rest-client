@@ -79,16 +79,9 @@ public class JIRAHTTPClient {
 	}
 	
 	/**
-	 * 
 	 * Setting JIRA API Resource Name
 	 * 
-	 * Structure of the JIRA REST API URIS
-	 * 
-	 * http://host:port/context/rest/api-name/api-version/resource-name
-	 * 
-	 * @see https://docs.atlassian.com/software/jira/docs/api/REST/latest/ 
-	 * 	
-	 * @param url
+	 * @param resourceName remote resource name
 	 */
 	public void setResourceName(String resourceName) {
 		webResource = client.resource(config.getString("jira.server.url") + API_URL + resourceName);

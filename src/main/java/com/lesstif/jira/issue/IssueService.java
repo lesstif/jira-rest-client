@@ -91,7 +91,9 @@ public class IssueService {
 	/**
 	 * Returns a list of all issue types visible to the user
 	 * 
-	 * @throws IOException
+	 * @return List list of IssueType
+	 * 
+	 * @throws IOException json decoding failed
 	 */
 	public List<IssueType> getAllIssueTypes() throws IOException {
 						
@@ -127,10 +129,12 @@ public class IssueService {
 
 	/**
 	 * Add one or more attachments to an issue.
-	 * @param issue
-	 * @throws IOException 
-	 * @throws JsonMappingException 
-	 * @throws JsonParseException 
+	 * 
+	 * @param issue Issue object
+	 * @return List
+	 * @throws JsonParseException json parsing failed
+	 * @throws JsonMappingException json mapping failed
+	 * @throws IOException general IO exception
 	 */
 	public List<Attachment> postAttachment(Issue issue) throws JsonParseException, JsonMappingException, IOException {
         List<File> files = issue.getFields().getFileList();
