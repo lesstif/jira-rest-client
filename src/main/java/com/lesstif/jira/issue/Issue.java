@@ -30,7 +30,8 @@ public class Issue extends JsonPrettyString{
 
 	/**
 	 * check attachment exist 
-	 * @return
+	 * 
+	 * @return boolean true: issue have attachment, false: no attachment
 	 */
 	public boolean hasAttachments() {
 		if (fields.getFileList() != null && fields.getFileList().size() > 0)
