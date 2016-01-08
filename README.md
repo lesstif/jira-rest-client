@@ -8,14 +8,14 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 # Installation
 
-1. check latest released artifact version from maven Central Repository([![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-client)
+1. check latest released artifact version from maven Central Repository([![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-api)
 )
 
 2. add this dependency snippet into pom.xml. 
 	```xml
 	    <dependency>
 	      <groupId>com.lesstif</groupId>
-	      <artifactId>jira-rest-client</artifactId>
+	      <artifactId>jira-rest-api</artifactId>
 	      <version>EDIT_THIS</version>
 	    </dependency>
 	```
