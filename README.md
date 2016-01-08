@@ -8,7 +8,8 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 # Installation
 
-1. check latest released artifact version from Sonatype OSPRH(Open Source Project Repository Hosting) repository.	(https://oss.sonatype.org/content/groups/public/com/lesstif/jira-rest-api/)  
+1. check latest released artifact version from maven Central Repository([![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.lesstif/jira-rest-client)
+)
 
 2. add this dependency snippet into pom.xml. 
 	```xml
