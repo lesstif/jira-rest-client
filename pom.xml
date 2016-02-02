@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lesstif</groupId>
 	<artifactId>jira-rest-api</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.1</version>
 
 	<name>JIRA REST Client</name>
 	<description>A Java client library for integrating with the JIRA issue and bug tracking software.</description>
@@ -11,7 +11,7 @@
 
 	<licenses>
 		<license>
-			<name>pache-2.0</name>
+			<name>Apache-2.0</name>
 			<url>https://opensource.org/licenses/Apache-2.0</url>
 			<distribution>repo</distribution>
 		</license>
