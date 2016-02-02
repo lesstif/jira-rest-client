@@ -19,4 +19,5 @@ public class IssueType extends JsonPrettyString {
 	private String iconUrl;
 	private String name;
 	private Boolean subtask;
+	private Integer avatarId;
 }
