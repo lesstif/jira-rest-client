@@ -1,4 +1,4 @@
-package com.lesstif.jira.project;
+package com.lesstif.jira.services;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.lesstif.jira.Constants;
 import com.lesstif.jira.JIRAHTTPClient;
+import com.lesstif.jira.project.Project;
 import com.sun.jersey.api.client.ClientResponse;
 
 import lombok.Data;
