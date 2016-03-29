@@ -90,6 +90,7 @@ public class IssueFields {
 	private DateTime duedate;
 	
 	private Map<String, String> watches;
+
 	private Worklog worklog;
 	
 	private Reporter assignee;
