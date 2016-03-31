@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lesstif</groupId>
 	<artifactId>jira-rest-api</artifactId>
-	<version>0.7.1</version>
+	<version>0.8.0</version>
 
 	<name>JIRA REST Client</name>
 	<description>A Java client library for integrating with the JIRA issue and bug tracking software.</description>

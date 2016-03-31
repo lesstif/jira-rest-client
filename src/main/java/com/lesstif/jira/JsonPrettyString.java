@@ -33,20 +33,17 @@ public class JsonPrettyString {
 	/**
 	 * Map to Pretty Json String
 	 * 
-	 * @param fields
-	 * @return Json String
-	 * @throws JsonGenerationException
-	 * @throws JsonMappingException
-	 * @throws IOException
+	 * @param map map data
+	 * @return Json String 
 	 */
-	public static String mapToPrettyJsonString(Map<String, Object> fields) {
+	public static String mapToPrettyJsonString(Map<String, Object> map) {
 	    ObjectMapper mapper = new ObjectMapper();
         
         mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         
         String jsonStr = "";
         try {
-            jsonStr = mapper.writeValueAsString(fields);
+            jsonStr = mapper.writeValueAsString(map);
         } catch (IOException e) {           
             e.printStackTrace();
         } 
