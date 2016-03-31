@@ -43,20 +43,19 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 
 ## get project info
-```java	
-@Test
-	public void getProject() throws IOException, ConfigurationException {
-		ProjectService prjService = new ProjectService();
-		
-		Project prj = prjService.getProjectDetail("TEST");
-		
-		logger.info("P=" + prj.toPrettyJsonString());
-	}
+```java
+public void getProject() throws IOException, ConfigurationException {
+	ProjectService prjService = new ProjectService();
+	
+	Project prj = prjService.getProjectDetail("TEST");
+	
+	logger.info("P=" + prj.toPrettyJsonString());
+}
 ```
+
 		
 ## get all projects
 ```java	
-@Test
 public void listProject() throws JsonParseException, JsonMappingException, IOException, ConfigurationException {
 	ProjectService prjService = new ProjectService();
 	
@@ -71,7 +70,6 @@ public void listProject() throws JsonParseException, JsonMappingException, IOExc
 
 ## Get Issue Info
 ```java
-@Test
 public void getIssue() throws IOException, ConfigurationException {
 	String issueKey = "TEST-833";
 
