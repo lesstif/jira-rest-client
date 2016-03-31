@@ -2,6 +2,7 @@ package com.lesstif.jira.issue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,4 +191,21 @@ public class IssueFields {
 		
 		return this;
 	}
+	
+	public IssueFields setComponentsByStringArray(String[] componenArray) {
+	    
+	    if (componenArray == null || componenArray.length == 0)
+	        return this;
+	    
+	    Component[] c = new Component[componenArray.length];
+	    
+	    for(int i = 0; i < componenArray.length; i++) {
+	        c[i] = new Component(componenArray[i]);
+	    }
+	    
+	    this.components = Arrays.asList(c);
+	    
+	    return this;
+	}
+	
 }
