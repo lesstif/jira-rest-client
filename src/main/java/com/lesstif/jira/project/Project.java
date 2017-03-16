@@ -43,4 +43,6 @@ public class Project extends JsonPrettyString{
 	private List<Component> components;
 	private List<IssueType> issueTypes;
 	private List<Version> versions;
+	
+	private String projectTypeKey;
 }
