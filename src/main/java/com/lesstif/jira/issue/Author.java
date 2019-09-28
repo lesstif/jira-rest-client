@@ -63,4 +63,26 @@ public class Author extends JsonPrettyString {
 		return name;
 	}
 
+        @org.codehaus.jackson.annotate.JsonProperty("key")
+        private java.lang.String key;
+
+        public void setKey(java.lang.String key) {
+          this.key = key;
+        }
+
+        public java.lang.String getKey() {
+                return key;
+        }
+
+        @org.codehaus.jackson.annotate.JsonProperty("timeZone")
+        private java.lang.String timeZone;
+
+        public void setTimeZone(java.lang.String timeZone) {
+          this.timeZone = timeZone;
+        }
+
+        public java.lang.String getTimeZone() {
+                return timeZone;
+        }
+
 }
