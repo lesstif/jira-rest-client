@@ -40,6 +40,8 @@ public class WorklogElement extends JsonPrettyString implements Comparable<Workl
     private String created;
     @JsonProperty("updated")
     private String updated;
+    @JsonProperty("issueId")
+    private String issueId;
 
     public WorklogElement() {
 
