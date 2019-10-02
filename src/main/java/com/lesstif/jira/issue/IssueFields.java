@@ -69,9 +69,9 @@ public class IssueFields {
 	private Status status;
 	
 	private String[] labels;
-	
-	private Integer workratio;
-	
+
+	private Double workratio;
+
 	private String environment;
 	
 	private List<Component> components;
