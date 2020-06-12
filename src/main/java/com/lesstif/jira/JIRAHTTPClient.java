@@ -4,8 +4,11 @@ import java.io.File;
 
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,25 +47,23 @@ public class JIRAHTTPClient {
 		// #1. specified system property (run jvm with -Djira.client.property=absolute_config_path)
 		// #2. current directory
 		// #3. in the library jar(jira-rest-api.jar)		
-		
-		File f = null;
-		if (System.getProperty("jira.client.property") != null)
-			f = new File(System.getProperty("jira.client.property"));
-		
-		if (f != null && f.exists()) {
-			logger.info("Using Configuration " + f.getAbsolutePath());
-			config = new PropertiesConfiguration(f);
+
+		String propFile = null;
+		if (System.getProperty("jira.client.property") != null) {
+			propFile = System.getProperty("jira.client.property");
 		} else {
-			f = new File(new File("."), CONFIG_FILE);
-			if (f.exists()) {
-				logger.info("Using Configuration " + f.getAbsolutePath());
-				config = new PropertiesConfiguration(f);
-			}
-			else {
-				logger.info("Using default Configuration");
-				config = new PropertiesConfiguration(CONFIG_FILE);
-			}
-		}		
+			propFile = CONFIG_FILE;
+		}
+
+		FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+				new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+						.configure(new Parameters().properties()
+								.setFileName(propFile)
+								.setThrowExceptionOnMissing(true)
+								.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+								.setIncludesAllowed(false));
+
+		config = builder.getConfiguration();
 		
 		clientConfig = new DefaultClientConfig();
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
