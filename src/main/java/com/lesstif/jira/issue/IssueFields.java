@@ -72,7 +72,7 @@ public class IssueFields {
 	
 	private String[] labels;
 	
-	private Integer workratio;
+	private Long workratio;
 	
 	private String environment;
 	
