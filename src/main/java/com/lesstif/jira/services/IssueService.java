@@ -6,7 +6,7 @@ import java.util.List;
 
 import lombok.Data;
 
-import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -29,7 +29,10 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.FileDataBodyPart;
 import java.net.URLEncoder;
-import org.apache.commons.lang.StringUtils;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @see
@@ -86,8 +89,13 @@ public class IssueService {
 
         content = response.getEntity(String.class);
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd,HH:mi");
+        
         mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        //mapper.configure(DeserializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.setDateFormat(format); // 1.8 and above
+        
         TypeReference<Issue> ref = new TypeReference<Issue>() {
         };
 

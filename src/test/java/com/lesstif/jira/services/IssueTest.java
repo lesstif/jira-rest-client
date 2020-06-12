@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
@@ -50,11 +51,14 @@ public class IssueTest {
         
         IssueFields fields = new IssueFields();
         
+        DateTime duedate = new DateTime();
+        
         fields.setProjectKey(PROJECT_KEY)
               .setSummary("something's wrong")
               .setIssueTypeName(IssueType.ISSUE_TYPE_TASK)
               .setDescription("Full description for issue")
-              .setAssigneeName(ASSIGNEE);
+              .setAssigneeName(ASSIGNEE)
+              .setDuedate(duedate);
         
         // Change Reporter need admin role
         fields.setReporterName(REPORTER)
@@ -138,6 +142,7 @@ public class IssueTest {
         for(Priority p : priority) {
             logger.info(p.toPrettyJsonString());
         }
+        
     }
     
     @Test

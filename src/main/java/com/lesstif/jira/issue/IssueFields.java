@@ -14,6 +14,7 @@ import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.ext.JodaSerializers.DateTimeSerializer;
 import org.joda.time.DateTime;
 
 import com.lesstif.jira.project.Project;
@@ -39,6 +40,7 @@ public class IssueFields {
 	private Reporter reporter;
 	
 	private DateTime created;
+	
 	private DateTime updated;
 	
 	private String description;
@@ -88,6 +90,8 @@ public class IssueFields {
 	private Reporter creator;
 	
 	private DateTime aggregatetimeoriginalestimate;
+	
+	@JsonSerialize(using=DateTimeSerializer.class)
 	private DateTime duedate;
 	
 	private Map<String, String> watches;
