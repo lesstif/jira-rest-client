@@ -5,12 +5,28 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'distribution'
 }
 
 repositories {
     mavenLocal()
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+distributions {
+    main {
+        distributionBaseName = 'someName'
+        contents {
+            from 'src/readme'
+        }
+    }
+    publications {
+        myDistribution(MavenPublication) {
+            artifact distZip
+            artifact customDistTar
+        }
     }
 }
 
