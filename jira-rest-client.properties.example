@@ -1,0 +1,8 @@
+## JIRA Server URL
+jira.server.url="https://your-jira.host.com"
+
+## JIRA User Name
+jira.user.id="jira-username"
+
+## JIRA User password
+jira.user.pwd="jira-password"
