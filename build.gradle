@@ -21,8 +21,8 @@ dependencies {
     implementation 'org.slf4j:log4j-over-slf4j:1.7.31'
     runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 
-    implementation 'com.sun.jersey:jersey-client:1.18.1'
-    implementation 'com.sun.jersey:jersey-json:1.9'
+    implementation 'com.sun.jersey:jersey-client:1.19.4'
+    implementation 'com.sun.jersey:jersey-json:1.19.4'
     
     implementation 'commons-configuration:commons-configuration:1.9'
     implementation 'joda-time:joda-time:2.3'

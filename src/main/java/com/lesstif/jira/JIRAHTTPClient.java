@@ -36,6 +36,10 @@ public class JIRAHTTPClient {
 	
 	private final String API_URL = "/rest/api/2/";
 	
+	private String url = null;
+	private String user = null;
+	private String password = null;
+
 	public JIRAHTTPClient() throws ConfigurationException {
 		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
 		org.slf4j.bridge.SLF4JBridgeHandler.install();
@@ -71,9 +75,13 @@ public class JIRAHTTPClient {
 		
 		client.addFilter(new LoggingFilter());
 		
-		if (config.getString("jira.user.id") != null && config.getString("jira.user.pwd") != null)
+		this.url = config.getString("jira.server.url");
+		this.user = config.getString("jira.user.id");
+		this.password = config.getString("jira.user.pwd");
+
+		if (this.user != null && this.password != null)
 		{
-			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(config.getString("jira.user.id"), config.getString("jira.user.pwd"));
+			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(this.user, this.password);
 			client.addFilter(auth);
 		}
 	}
@@ -84,7 +92,8 @@ public class JIRAHTTPClient {
 	 * @param resourceName remote resource name
 	 */
 	public void setResourceName(String resourceName) {
-		webResource = client.resource(config.getString("jira.server.url") + API_URL + resourceName);
+
+		webResource = client.resource(this.url + API_URL + resourceName);
 	}
 	
 	public ClientResponse get() {
