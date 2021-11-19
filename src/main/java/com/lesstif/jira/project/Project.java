@@ -1,6 +1,7 @@
 package com.lesstif.jira.project;
 import java.util.List;
 
+import lombok.EqualsAndHashCode;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.joda.time.DateTime;
 
@@ -20,6 +21,7 @@ import com.lesstif.jira.issue.Version;
  *
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @JsonIgnoreProperties({"assigneeType", "roles"
 })
 public class Project extends JsonPrettyString{

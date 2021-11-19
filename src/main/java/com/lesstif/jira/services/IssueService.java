@@ -6,6 +6,7 @@ import java.util.List;
 
 import lombok.Data;
 
+import lombok.EqualsAndHashCode;
 import org.apache.commons.configuration.ConfigurationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;

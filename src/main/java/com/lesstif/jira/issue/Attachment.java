@@ -2,11 +2,12 @@ package com.lesstif.jira.issue;
 
 import lombok.Data;
 
+import lombok.EqualsAndHashCode;
 import org.joda.time.DateTime;
 
 import com.lesstif.jira.JsonPrettyString;
 
-@Data
+@EqualsAndHashCode(callSuper=false)
 /**
  * @see https://docs.atlassian.com/jira/REST/latest/#d2e4213
  * 

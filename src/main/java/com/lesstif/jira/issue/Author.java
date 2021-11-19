@@ -2,9 +2,10 @@ package com.lesstif.jira.issue;
 
 import com.lesstif.jira.JsonPrettyString;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@Data
+@EqualsAndHashCode(callSuper=false)
 @JsonIgnoreProperties({"avatarUrls"
 })
 public class Author extends JsonPrettyString {

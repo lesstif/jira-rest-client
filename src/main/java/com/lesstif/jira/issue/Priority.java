@@ -3,8 +3,10 @@ package com.lesstif.jira.issue;
 import com.lesstif.jira.JsonPrettyString;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class Priority extends JsonPrettyString {
 	public static final String PRIORITY_BLOCKER = "Blocker";
 	public static final String PRIORITY_CRITICAL = "Critical";

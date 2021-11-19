@@ -6,8 +6,10 @@ import java.io.IOException;
 import com.lesstif.jira.JsonPrettyString;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Issue extends JsonPrettyString{
 	private String expand;
 	private String id;

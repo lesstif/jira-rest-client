@@ -5,63 +5,49 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'distribution'
 }
 
 repositories {
-    mavenLocal()
-    maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
-    }
+    mavenCentral()
+    jcenter()
+    google()
 }
 
-distributions {
-    main {
-        distributionBaseName = 'someName'
-        contents {
-            from 'src/readme'
-        }
-    }
-    publications {
-        myDistribution(MavenPublication) {
-            artifact distZip
-            artifact customDistTar
-        }
-    }
+ext {
+    slf4jVersion = '1.7.32'
+    lombokVersion = '1.18.22'
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.31'
-    implementation 'org.slf4j:jcl-over-slf4j:1.7.31'
-    implementation 'org.slf4j:jul-to-slf4j:1.7.31'
-    implementation 'org.slf4j:log4j-over-slf4j:1.7.31'
-    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
-
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    implementation "org.slf4j:jul-to-slf4j:$slf4jVersion"
+    implementation 'commons-io:commons-io:2.10.0'
     implementation 'com.sun.jersey:jersey-client:1.19.4'
     implementation 'com.sun.jersey:jersey-json:1.19.4'
-    
-    implementation 'commons-configuration:commons-configuration:1.9'
-    implementation 'joda-time:joda-time:2.3'
-    implementation 'com.sun.jersey.contribs:jersey-multipart:1.18.1'
-   
-    testImplementation 'junit:junit:4.13.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
-	
-	testCompileOnly 'org.projectlombok:lombok:1.18.20'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    implementation 'commons-configuration:commons-configuration2:1.9'
+    implementation 'joda-time:joda-time:2.10.10'
+    implementation 'com.sun.jersey.contribs:jersey-multipart:1.19.4'
+    implementation 'org.slf4j:log4j-over-slf4j:1.7.31'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 group = 'com.lesstif'
-version = '0.8.1'
+version = '1.0-SNAPSHOT'
 description = 'JIRA REST Client'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 java {
     withSourcesJar()
     withJavadocJar()
-    sourceCompatibility '1.8'
-    targetCompatibility '1.8'
 }
 
 publishing {
