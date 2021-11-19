@@ -39,6 +39,7 @@ public class JIRAHTTPClient {
 	private String url = null;
 	private String user = null;
 	private String password = null;
+	private String pat = null;
 
 	public JIRAHTTPClient() throws ConfigurationException {
 		org.slf4j.bridge.SLF4JBridgeHandler.removeHandlersForRootLogger();		
@@ -78,10 +79,11 @@ public class JIRAHTTPClient {
 		this.url = config.getString("jira.server.url");
 		this.user = config.getString("jira.user.id");
 		this.password = config.getString("jira.user.pwd");
+		this.pat = config.getString("jira.user.pat");
 
-		if (this.user != null && this.password != null)
+		if (this.user != null && this.pat != null)
 		{
-			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(this.user, this.password);
+			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(this.user, this.pat);
 			client.addFilter(auth);
 		}
 	}
