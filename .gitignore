@@ -129,4 +129,7 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 
+/.idea
+
 # End of https://www.toptal.com/developers/gitignore/api/gradle
+/jira-rest-client.log

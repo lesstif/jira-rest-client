@@ -3,8 +3,10 @@ package com.lesstif.jira.issue;
 import com.lesstif.jira.JsonPrettyString;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class IssueSearchResult extends JsonPrettyString{
     
   private String expand;
