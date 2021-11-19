@@ -4,5 +4,8 @@ ijra.server.url=https://your-jira.host.here
 ## JIRA User Name
 jira.user.id=jira-username
 
-## JIRA User password
-jira.user.pwd=jira-password
+## JIRA User password - deprecated
+jira.user.pwd=your-access-token-here
+
+# personal access token
+ijra.user.url=your-personal-token-here
