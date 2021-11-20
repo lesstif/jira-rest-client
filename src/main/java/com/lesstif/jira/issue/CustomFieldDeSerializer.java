@@ -3,12 +3,12 @@ package com.lesstif.jira.issue;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.ObjectCodec;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +35,7 @@ public class CustomFieldDeSerializer extends JsonDeserializer<Object> {
 			}
 			//String
 			if (child.isTextual()) {
+
 				Iterator<String> it = child.getFieldNames();
 				while (it.hasNext()) {
 					String field = it.next();
