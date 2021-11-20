@@ -1,15 +1,16 @@
 package com.lesstif.jira.issue;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lesstif.jira.JsonPrettyString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @EqualsAndHashCode(callSuper=false)
 @JsonIgnoreProperties({"avatarUrls"
 })
 public class Author extends JsonPrettyString {
-	@org.codehaus.jackson.annotate.JsonProperty("emailAddress")
+	@JsonProperty("emailAddress")
 	private java.lang.String emailaddress;
 
  	public void setEmailaddress(java.lang.String emailaddress) {
@@ -20,7 +21,7 @@ public class Author extends JsonPrettyString {
 		return emailaddress;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("self")
+	@JsonProperty("self")
 	private java.lang.String self;
 
  	public void setSelf(java.lang.String self) {
@@ -31,7 +32,7 @@ public class Author extends JsonPrettyString {
 		return self;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("displayName")
+	@JsonProperty("displayName")
 	private java.lang.String displayname;
 
  	public void setDisplayname(java.lang.String displayname) {
@@ -42,7 +43,7 @@ public class Author extends JsonPrettyString {
 		return displayname;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("active")
+	@JsonProperty("active")
 	private java.lang.Boolean active;
 
  	public void setActive(java.lang.Boolean active) {
@@ -53,7 +54,7 @@ public class Author extends JsonPrettyString {
 		return active;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("name")
+	@JsonProperty("name")
 	private java.lang.String name;
 
  	public void setName(java.lang.String name) {
@@ -64,7 +65,7 @@ public class Author extends JsonPrettyString {
 		return name;
 	}
 
-        @org.codehaus.jackson.annotate.JsonProperty("key")
+        @JsonProperty("key")
         private java.lang.String key;
 
         public void setKey(java.lang.String key) {
@@ -75,7 +76,7 @@ public class Author extends JsonPrettyString {
                 return key;
         }
 
-        @org.codehaus.jackson.annotate.JsonProperty("timeZone")
+        @JsonProperty("timeZone")
         private java.lang.String timeZone;
 
         public void setTimeZone(java.lang.String timeZone) {

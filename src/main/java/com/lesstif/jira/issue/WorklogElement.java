@@ -1,5 +1,6 @@
 package com.lesstif.jira.issue;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lesstif.jira.JsonPrettyString;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,8 +15,6 @@ import java.util.regex.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.codehaus.jackson.annotate.JsonProperty;
-
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class WorklogElement extends JsonPrettyString implements Comparable<WorklogElement> {

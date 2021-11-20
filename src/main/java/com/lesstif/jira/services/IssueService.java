@@ -4,16 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 import lombok.EqualsAndHashCode;
 import org.apache.commons.configuration.ConfigurationException;
 //import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.type.TypeReference;
+
+import org.glassfish.jersey.client.ClientResponse;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.slf4j.Logger;
 
 import com.lesstif.jira.Constants;
@@ -24,13 +28,11 @@ import com.lesstif.jira.issue.IssueSearchResult;
 import com.lesstif.jira.issue.IssueType;
 import com.lesstif.jira.issue.Priority;
 import com.lesstif.jira.issue.WorklogElement;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.multipart.FormDataMultiPart;
-import com.sun.jersey.multipart.file.FileDataBodyPart;
 import java.net.URLEncoder;
 import org.apache.commons.lang.StringUtils;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 
 /**
  * @see
@@ -61,10 +63,10 @@ public class IssueService {
 
         ClientResponse response = client.get();
 
-        String content = response.getEntity(String.class);
+        String content = (String) response.getEntity();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<Issue> ref = new TypeReference<Issue>() {
         };
         issue = mapper.readValue(content, ref);
@@ -76,14 +78,15 @@ public class IssueService {
         ObjectMapper mapper = new ObjectMapper();
 
         //to ignore a field if its value is null
-        mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        // FIXME
+        //  mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         String content = mapper.writeValueAsString(issue);
 
         logger.debug("Content=" + content);
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE);
 
-        ClientResponse response = client.post(content);
+        ClientResponse response = post(Entity.text(content));
 
         content = response.getEntity(String.class);
 
@@ -177,11 +180,11 @@ public class IssueService {
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + idOrKey + "/attachments");
 
-        ClientResponse response = client.postMultiPart(form);
-        String content = response.getEntity(String.class);
+        Response response = client.postMultiPart(form);
+        String content = (String) response.getEntity();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
         TypeReference<List<Attachment>> ref = new TypeReference<List<Attachment>>() {
         };
@@ -196,7 +199,6 @@ public class IssueService {
      * @param worklog Issue object
      * @param issue
      * @return List
-     * @throws JsonParseException json parsing failed
      * @throws JsonMappingException json mapping failed
      * @throws IOException general IO exception
      */
@@ -216,23 +218,23 @@ public class IssueService {
         ObjectMapper mapper = new ObjectMapper();
        
         //to ignore a field if its value is null
-        mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        //FIXME mapper.getSerializationConfig().setSerializationInclusion(JsonInclude);
         String content = mapper.writeValueAsString(worklog);
         final WorklogElement result = postWorklog(content, issueId);
 
         return result;
     }
 
-    public WorklogElement postWorklog(String content, final String issueId) throws UniformInterfaceException, ClientHandlerException, IOException {
+    public WorklogElement postWorklog(String content, final String issueId) throws IOException {
         ObjectMapper mapper;
         //content = "{\"comment\":\"I did some work here.\",\"started\":\"2016-03-23T04:22:37.471+0000\",\"timeSpentSeconds\":12000}";
         logger.debug("Content=" + content);
         final String resource = Constants.JIRA_RESOURCE_ISSUE + "/" + issueId + "/worklog";
         client.setResourceName(resource);
-        ClientResponse response = client.post(content);
-        content = response.getEntity(String.class);
+        Response response = client.post(content);
+        content = (String) response.getEntity();
         mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<WorklogElement> ref = new TypeReference<WorklogElement>() {
         };
         WorklogElement resIssue = mapper.readValue(content, ref);
@@ -242,7 +244,8 @@ public class IssueService {
     public IssueSearchResult getIssuesFromQuery(final String query) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        //FIXME
+        // mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
 
         String content = URLEncoder.encode(query, "UTF-8");
 
@@ -256,7 +259,7 @@ public class IssueService {
 
         ClientResponse response = client.get();
 
-        content = response.getEntity(String.class);
+        content = (String) response.getEntity();
 
         TypeReference<IssueSearchResult> ref = new TypeReference<IssueSearchResult>() {
         };

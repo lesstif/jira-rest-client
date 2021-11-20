@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * class to json string formatter
@@ -15,8 +15,8 @@ public class JsonPrettyString {
 	
 	final public String toPrettyJsonString() {
 		ObjectMapper mapper = new ObjectMapper();
-		
-		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+
+		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 		
 		StringWriter sw = new StringWriter();
 		try {
@@ -37,7 +37,7 @@ public class JsonPrettyString {
 	public static String mapToPrettyJsonString(Map<String, Object> map) {
 	    ObjectMapper mapper = new ObjectMapper();
         
-        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         
         String jsonStr = "";
         try {

@@ -133,3 +133,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle
 /jira-rest-client.log
+/jira-rest-api.iml
+/jira-rest-api.ipr
+/jira-rest-api.iws
