@@ -1,6 +1,7 @@
 package com.lesstif.jira.issue;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,11 +12,12 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import org.joda.time.DateTime;
 
 import com.lesstif.jira.project.Project;
 
@@ -38,9 +40,14 @@ public class IssueFields {
 	private String timespent;
 	
 	private Reporter reporter;
-	
-	private DateTime created;
-	private DateTime updated;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime created;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime updated;
 	
 	private String description;
 	
@@ -84,12 +91,20 @@ public class IssueFields {
 	private Resolution resolution;
 	
 	private String[] fixVersions;
-	private DateTime resolutiondate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime resolutiondate;
 	
 	private Reporter creator;
-	
-	private DateTime aggregatetimeoriginalestimate;
-	private DateTime duedate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime aggregatetimeoriginalestimate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime duedate;
 	
 	private Map<String, String> watches;
 
@@ -100,8 +115,10 @@ public class IssueFields {
 	private List<Attachment> attachment;
 	
 	private	List<File>	fileList;
-	
-	private DateTime aggregatetimeestimate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime aggregatetimeestimate;
 	
 	private List<Version> versions;
 	

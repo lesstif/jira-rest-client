@@ -15,6 +15,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.ClientResponse;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
@@ -73,6 +74,9 @@ public class JIRAHTTPClient {
 		clientConfig.property(ClientProperties.CONNECT_TIMEOUT, 5000);
 		clientConfig.property(ClientProperties.FOLLOW_REDIRECTS, true);
 		//clientConfig.property(ClientProperties.REQUEST_ENTITY_PROCESSING, true);
+		if (config.getString("jira.verbose").equals("true")) {
+			clientConfig.property(LoggingFeature.LOGGING_FEATURE_VERBOSITY_CLIENT, LoggingFeature.Verbosity.PAYLOAD_ANY);
+		}
 
 		clientConfig.register(MultiPartFeature.class);
 
@@ -82,12 +86,6 @@ public class JIRAHTTPClient {
 		this.user = config.getString("jira.user.id");
 		this.password = config.getString("jira.user.pwd");
 		this.pat = config.getString("jira.user.pat");
-
-		if (this.user != null && this.pat != null)
-		{
-//			HTTPBasicAuthFilter auth = new HTTPBasicAuthFilter(this.user, this.pat);
-//			client.addFilter(auth);
-		}
 	}
 	
 	/**
@@ -105,8 +103,9 @@ public class JIRAHTTPClient {
 			throw new IllegalStateException("webTarget is not Initializied. call setResourceName() method ");
 		}
 
-		Response response = webTarget.request(MediaType.APPLICATION_JSON)
+		Response response = webTarget.request(MediaType.APPLICATION_JSON + ";charset=utf-8")
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
 				.get(Response.class);
 		
 		return checkStatus(response);
@@ -117,8 +116,9 @@ public class JIRAHTTPClient {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
 
-		Response response = webTarget.request(MediaType.APPLICATION_JSON)
+		Response response = webTarget.request(MediaType.APPLICATION_JSON + ";charset=utf-8")
 									.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
+									.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
 									.post(Entity.text(content));
 		
 		return checkStatus(response);

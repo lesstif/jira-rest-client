@@ -1,8 +1,13 @@
 package com.lesstif.jira.issue;
 
-import org.joda.time.DateTime;
-
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class Version {
@@ -12,11 +17,18 @@ public class Version {
 	private String name;
 	private Boolean archived;
 	private Boolean released;
-	private DateTime releaseDate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate releaseDate;
+
 	private Boolean overdue;
 	private String userReleaseDate;
 	private String projectId;
-	
-	private DateTime startDate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate startDate;
+
 	private String userStartDate;
 }

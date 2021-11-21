@@ -9,3 +9,6 @@ jira.user.pwd=your-access-token-here
 
 # personal access token
 ijra.user.url=your-personal-token-here
+
+## verbose mode for loggin
+jira.verbose=false

@@ -1,18 +1,17 @@
 package com.lesstif.jira.services;
+
 import java.io.IOException;
 import java.util.List;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.configuration.ConfigurationException;
-
 import com.lesstif.jira.Constants;
 import com.lesstif.jira.JIRAHTTPClient;
 import com.lesstif.jira.project.Project;
-
 import lombok.Data;
-import org.glassfish.jersey.client.ClientResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 
@@ -26,7 +25,9 @@ import javax.ws.rs.core.Response;
 @Data
 public class ProjectService {
 	private JIRAHTTPClient client = null;
-	
+
+	private Logger logger = LoggerFactory.getLogger(ProjectService.class);
+
 	public ProjectService() throws ConfigurationException {
 		client = new JIRAHTTPClient();
 	}
@@ -57,7 +58,9 @@ public class ProjectService {
 		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT + "/" + idOrKey);
 		Response response = client.get();
 					
-		String content = (String) response.getEntity();
+		String content = response.readEntity(String.class);
+
+		logger.debug("ProjectDetail=>" + content);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
