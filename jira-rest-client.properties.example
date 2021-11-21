@@ -2,7 +2,7 @@
 ijra.server.url=https://your-jira.host.here
 
 ## JIRA User Name
-jira.user.id=jira-username
+jira.user.id=gitlab
 
 ## JIRA User password - deprecated
 jira.user.pwd=your-access-token-here

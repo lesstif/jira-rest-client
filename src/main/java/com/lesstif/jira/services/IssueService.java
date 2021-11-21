@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -32,6 +34,7 @@ import java.net.URLEncoder;
 import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -61,7 +64,7 @@ public class IssueService {
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + issueKey);
 
-        ClientResponse response = client.get();
+        Response response = client.get();
 
         String content = (String) response.getEntity();
 
@@ -86,12 +89,12 @@ public class IssueService {
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE);
 
-        ClientResponse response = post(Entity.text(content));
+        Response response = client.post(content);
 
-        content = response.getEntity(String.class);
+        content = (String) response.getEntity();
 
         mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<Issue> ref = new TypeReference<Issue>() {
         };
 
@@ -117,11 +120,11 @@ public class IssueService {
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUETYPE);
 
-        ClientResponse response = client.get();
-        String content = response.getEntity(String.class);
+        Response response = client.get();
+        String content = (String) response.getEntity();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
         TypeReference<List<IssueType>> ref = new TypeReference<List<IssueType>>() {
         };
@@ -134,11 +137,11 @@ public class IssueService {
 
         client.setResourceName(Constants.JIRA_RESOURCE_PRIORITY);
 
-        ClientResponse response = client.get();
-        String content = response.getEntity(String.class);
+        Response response = client.get();
+        String content = (String) response.getEntity();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
         TypeReference<List<Priority>> ref = new TypeReference<List<Priority>>() {
         };
@@ -152,11 +155,9 @@ public class IssueService {
      *
      * @param issue Issue object
      * @return List
-     * @throws JsonParseException json parsing failed
-     * @throws JsonMappingException json mapping failed
      * @throws IOException general IO exception
      */
-    public List<Attachment> postAttachment(Issue issue) throws JsonParseException, JsonMappingException, IOException {
+    public List<Attachment> postAttachment(Issue issue) throws IOException {
         List<File> files = issue.getFields().getFileList();
 
         if (files == null || files.size() == 0) {
@@ -199,6 +200,7 @@ public class IssueService {
      * @param worklog Issue object
      * @param issue
      * @return List
+     * @throws JsonParseException json parsing failed
      * @throws JsonMappingException json mapping failed
      * @throws IOException general IO exception
      */
@@ -257,7 +259,7 @@ public class IssueService {
 
         client.setResourceName(resource);
 
-        ClientResponse response = client.get();
+        Response response = client.get();
 
         content = (String) response.getEntity();
 
