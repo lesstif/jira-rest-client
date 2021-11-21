@@ -1,12 +1,13 @@
 package com.lesstif.jira.issue;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lesstif.jira.JsonPrettyString;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper=false)
 public class Worklog extends JsonPrettyString {
-	@org.codehaus.jackson.annotate.JsonProperty("startAt")
+	@JsonProperty("startAt")
 	private java.lang.Integer startat;
 
  	public void setStartat(java.lang.Integer startat) {
@@ -17,7 +18,7 @@ public class Worklog extends JsonPrettyString {
 		return startat;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("maxResults")
+	@JsonProperty("maxResults")
 	private java.lang.Integer maxresults;
 
  	public void setMaxresults(java.lang.Integer maxresults) {
@@ -28,7 +29,7 @@ public class Worklog extends JsonPrettyString {
 		return maxresults;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("total")
+	@JsonProperty("total")
 	private java.lang.Integer total;
 
  	public void setTotal(java.lang.Integer total) {
@@ -39,7 +40,7 @@ public class Worklog extends JsonPrettyString {
 		return total;
 	}
 
-	@org.codehaus.jackson.annotate.JsonProperty("worklogs")
+	@JsonProperty("worklogs")
 	private WorklogElement[] worklogs;
 
  	public void setWorklogs(WorklogElement[] worklogs) {

@@ -136,3 +136,6 @@ gradle-app.setting
 /jira-rest-api.iml
 /jira-rest-api.ipr
 /jira-rest-api.iws
+*.png
+*.log
+*.pdf

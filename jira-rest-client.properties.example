@@ -1,11 +1,11 @@
 ## JIRA Server URL
-jira.server.url=https://your-jira.host.com
+jira.server.url=https://jira.lesstif.com
 
 ## JIRA User Name
-jira.user.id=jira-username
+jira.user.id=gitlab
 
 ## JIRA User password - deprecated
 jira.user.pwd=your-access-token-here
 
 # personal access token
-jira.user.pat=your-access-token-here
+jira.user.pat=NDEwOTAyNDkwMjk0OiipeRow2d5I6KAUTXPCA8vJFry0

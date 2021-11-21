@@ -2,17 +2,19 @@ package com.lesstif.jira.services;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.configuration.ConfigurationException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import com.lesstif.jira.Constants;
 import com.lesstif.jira.JIRAHTTPClient;
 import com.lesstif.jira.project.Project;
-import com.sun.jersey.api.client.ClientResponse;
 
 import lombok.Data;
+import org.glassfish.jersey.client.ClientResponse;
+
+import javax.ws.rs.core.Response;
 
 
 /**
@@ -34,13 +36,13 @@ public class ProjectService {
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT);
-		ClientResponse response = client.get();
+		Response response = client.get();
 					
-		String content = response.getEntity(String.class);	
+		String content = response.readEntity(String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
 		TypeReference<List<Project>> ref = new TypeReference<List<Project>>(){};
 		List<Project> prj = mapper.readValue(content, ref);
 		
@@ -53,12 +55,12 @@ public class ProjectService {
 			throw new IllegalStateException("HTTP Client not Initailized");
 		
 		client.setResourceName(Constants.JIRA_RESOURCE_PROJECT + "/" + idOrKey);
-		ClientResponse response = client.get();
+		Response response = client.get();
 					
-		String content = response.getEntity(String.class);	
+		String content = (String) response.getEntity();
 		
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 		
 		TypeReference<Project> ref = new TypeReference<Project>(){};
 		Project prj = mapper.readValue(content, ref);

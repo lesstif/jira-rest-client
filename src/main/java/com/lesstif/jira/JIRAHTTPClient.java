@@ -6,14 +6,17 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,15 +69,15 @@ public class JIRAHTTPClient {
 			}
 		}		
 		
-//		clientConfig = new DefaultClientConfig();
-//		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.FALSE);
+		clientConfig = new ClientConfig();
+		clientConfig.property(ClientProperties.CONNECT_TIMEOUT, 5000);
+		clientConfig.property(ClientProperties.FOLLOW_REDIRECTS, true);
+		//clientConfig.property(ClientProperties.REQUEST_ENTITY_PROCESSING, true);
 
-		client = ClientBuilder.newClient();
-//
-//		client = Client.create(clientConfig);
-//
-//		client.addFilter(new LoggingFilter());
-		
+		clientConfig.register(MultiPartFeature.class);
+
+		client = ClientBuilder.newClient(clientConfig);
+
 		this.url = config.getString("jira.server.url");
 		this.user = config.getString("jira.user.id");
 		this.password = config.getString("jira.user.pwd");
@@ -97,13 +100,14 @@ public class JIRAHTTPClient {
 		webTarget = client.target(this.url + API_URL).path(resourceName);
 	}
 	
-	public ClientResponse get() {
+	public Response get() {
 		if (webTarget == null) {
 			throw new IllegalStateException("webTarget is not Initializied. call setResourceName() method ");
 		}
-		
-		ClientResponse response = webTarget.request("application/json")
-				.get(ClientResponse.class);
+
+		Response response = webTarget.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
+				.get(Response.class);
 		
 		return checkStatus(response);
 	}
@@ -114,8 +118,8 @@ public class JIRAHTTPClient {
 		}
 
 		Response response = webTarget.request(MediaType.APPLICATION_JSON)
-
-				.post(Entity.text(content));
+									.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
+									.post(Entity.text(content));
 		
 		return checkStatus(response);
 	}
@@ -124,17 +128,18 @@ public class JIRAHTTPClient {
 		if (webTarget == null) {
 			throw new IllegalStateException("webResource is not Initializied. call setResourceName() method ");
 		}
- 		
+
 		Response response = webTarget.request()
 				.header("X-Atlassian-Token", "nocheck")
 				//.type(MediaType.MULTIPART_FORM_DATA)
 				.post(Entity.entity(multiPart, multiPart.getMediaType()));
-		
+
 		return checkStatus(response);
 	}
 	
 	private Response checkStatus(Response response) {
-		if (response.getStatus() != Response.Status.OK.getStatusCode() && response.getStatus() != Status.CREATED.getStatusCode()) {
+		if (response.getStatus() != Response.Status.OK.getStatusCode()
+				&& response.getStatus() != Response.Status.CREATED.getStatusCode()) {
 			throw new IllegalStateException("Failed : HTTP error code : "	+ response.getStatus());
 		}
 		

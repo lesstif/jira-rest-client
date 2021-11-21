@@ -36,7 +36,9 @@ public class CustomFieldDeSerializer extends JsonDeserializer<Object> {
 			//String
 			if (child.isTextual()) {
 
-				Iterator<String> it = child.getFieldNames();
+				// FIXME
+				/*
+				Iterator<String> it = child.get("FieldNames");
 				while (it.hasNext()) {
 					String field = it.next();
 					logger.info("in while loop " + field);
@@ -44,6 +46,7 @@ public class CustomFieldDeSerializer extends JsonDeserializer<Object> {
 						
 					}
 				}
+				 */
 			}
 		}
 		return null;
