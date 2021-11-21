@@ -7,10 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import lombok.Data;
 
 import lombok.EqualsAndHashCode;
@@ -85,7 +82,7 @@ public class IssueService {
         //  mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         String content = mapper.writeValueAsString(issue);
 
-        logger.debug("Content=" + content);
+        logger.trace("Content=" + content);
 
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE);
 

@@ -1,7 +1,5 @@
 package com.lesstif.jira.issue;
 
-import org.joda.time.DateTime;
-
 import com.lesstif.jira.project.AvatarUrl;
 
 import lombok.Data;

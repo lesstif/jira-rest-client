@@ -16,9 +16,8 @@ repositories {
 ext {
     slf4jVersion = '1.7.32'
     lombokVersion = '1.18.22'
-    jodaTimeVersion = '2.10.13'
     jerseyVersion = '2.34'
-    jacksonVersion = "2.13.0"
+    jacksonVersion = "2.12.5"
 }
 
 dependencies {
@@ -32,6 +31,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion'
 
     implementation "org.glassfish.jersey.core:jersey-client:$jerseyVersion"
     implementation "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
@@ -45,11 +45,11 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation 'commons-configuration:commons-configuration:1.9'
-    implementation "joda-time:joda-time:$jodaTimeVersion"
 
     runtimeOnly 'ch.qos.logback:logback-classic:1.2.7'
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 group = 'com.lesstif'

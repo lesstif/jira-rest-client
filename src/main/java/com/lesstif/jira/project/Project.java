@@ -1,10 +1,14 @@
 package com.lesstif.jira.project;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.EqualsAndHashCode;
-import org.joda.time.DateTime;
-
 import lombok.Data;
 
 import com.lesstif.jira.JsonPrettyString;
@@ -34,8 +38,10 @@ public class Project extends JsonPrettyString{
 	private String description;
 	private String name;
 	private String url;
-	
-	private DateTime startDate;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime startDate;
 	
 	private Lead lead;
 	
@@ -47,4 +53,6 @@ public class Project extends JsonPrettyString{
 	private List<Version> versions;
 	
 	private String projectTypeKey;
+
+	private boolean archived;
 }

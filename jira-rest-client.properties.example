@@ -9,3 +9,6 @@ jira.user.pwd=your-access-token-here
 
 # personal access token
 jira.user.pat=NDEwOTAyNDkwMjk0OiipeRow2d5I6KAUTXPCA8vJFry0
+
+## verbose mode for loggin
+jira.verbose=false

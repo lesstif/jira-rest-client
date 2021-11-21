@@ -1,11 +1,15 @@
 package com.lesstif.jira.issue;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
 
 import lombok.EqualsAndHashCode;
-import org.joda.time.DateTime;
-
 import com.lesstif.jira.JsonPrettyString;
+
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper=false)
 /**
@@ -19,8 +23,10 @@ public class Attachment extends JsonPrettyString{
 	private String self;
 	private String filename;
 	private Reporter author;
-	
-	private DateTime created;
+
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDateTime created;
 	
 	private Integer size;
 	private String mimeType;	
