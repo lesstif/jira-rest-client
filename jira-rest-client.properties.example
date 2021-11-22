@@ -1,14 +1,14 @@
 ## JIRA Server URL
-ijra.server.url=https://your-jira.host.here
+jira.server.url=https://your-jira-host.com
 
 ## JIRA User Name
-jira.user.id=gitlab
+jira.user.id=your-jira-account
 
 ## JIRA User password - deprecated
-jira.user.pwd=your-access-token-here
+jira.user.pwd=dont-use-this
 
 # personal access token
-ijra.user.url=your-personal-token-here
+jira.user.pat=your-access-token-here
 
-## verbose mode for loggin
+## verbose mode for logging
 jira.verbose=false

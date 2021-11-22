@@ -22,7 +22,7 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 
 3. create *jira-rest-client.properties* file into directory in the CLASS PATH variable and set your jira host and auth infos.    
 	```
-	ijra.server.url=https://your-jira.host.here
+	jira.server.url="https://your-jira.host.com"
 	jira.user.id="jira-username"
 	jira.user.pwd="jira-password"
 	```
