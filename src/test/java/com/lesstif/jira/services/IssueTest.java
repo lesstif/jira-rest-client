@@ -21,6 +21,9 @@ import com.lesstif.jira.issue.IssueSearchResult;
 import com.lesstif.jira.issue.IssueType;
 import com.lesstif.jira.issue.Priority;
 import com.lesstif.jira.util.HttpConnectionUtil;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -67,16 +70,24 @@ public class IssueTest {
         
         issue.setFields(fields);
         
-        logger.info(issue.toPrettyJsonString());
+        // logger.info(issue.toPrettyJsonString());
         
         IssueService issueService = new IssueService();
         
         Issue genIssue = issueService.createIssue(issue);       
         
         ISSUE_KEY = genIssue.getKey();
-        
+
+        assertThat(genIssue.getId(), notNullValue());
+        assertThat(genIssue.getFields(), notNullValue());
+
+        IssueFields ifs = genIssue.getFields();
+
+        //assertThat(ifs.getReporter().getKey(), is(REPORTER));
+        assertThat(ifs.getIssuetype(), notNullValue());
+
         //Print Generated issue
-        logger.info(genIssue.toPrettyJsonString());
+        //logger.info(genIssue.toPrettyJsonString());
     }
     
     @Test

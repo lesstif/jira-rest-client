@@ -63,7 +63,7 @@ public class IssueService {
 
         Response response = client.get();
 
-        String content = (String) response.getEntity();
+        String content = response.readEntity(String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -88,14 +88,14 @@ public class IssueService {
 
         Response response = client.post(content);
 
-        content = (String) response.getEntity();
+        String responseContent = response.readEntity(String.class);
 
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<Issue> ref = new TypeReference<Issue>() {
         };
 
-        Issue resIssue = mapper.readValue(content, ref);
+        Issue resIssue = mapper.readValue(responseContent, ref);
 
         if (issue.hasAttachments()) {
             issue.setId(resIssue.getId());
@@ -118,7 +118,7 @@ public class IssueService {
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUETYPE);
 
         Response response = client.get();
-        String content = (String) response.getEntity();
+        String content = response.readEntity(String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -135,7 +135,7 @@ public class IssueService {
         client.setResourceName(Constants.JIRA_RESOURCE_PRIORITY);
 
         Response response = client.get();
-        String content = (String) response.getEntity();
+        String content = response.readEntity(String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -179,7 +179,7 @@ public class IssueService {
         client.setResourceName(Constants.JIRA_RESOURCE_ISSUE + "/" + idOrKey + "/attachments");
 
         Response response = client.postMultiPart(form);
-        String content = (String) response.getEntity();
+        String content = response.readEntity(String.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
@@ -231,7 +231,8 @@ public class IssueService {
         final String resource = Constants.JIRA_RESOURCE_ISSUE + "/" + issueId + "/worklog";
         client.setResourceName(resource);
         Response response = client.post(content);
-        content = (String) response.getEntity();
+        content = response.readEntity(String.class);
+
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         TypeReference<WorklogElement> ref = new TypeReference<WorklogElement>() {
@@ -245,10 +246,7 @@ public class IssueService {
 
         //FIXME
         // mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-
         String content = URLEncoder.encode(query, "UTF-8");
-
-        logger.debug("Content=" + content);
 
         final String resource = "search?jql=" + content;
         
@@ -258,7 +256,7 @@ public class IssueService {
 
         Response response = client.get();
 
-        content = (String) response.getEntity();
+        content =  response.readEntity(String.class);
 
         TypeReference<IssueSearchResult> ref = new TypeReference<IssueSearchResult>() {
         };

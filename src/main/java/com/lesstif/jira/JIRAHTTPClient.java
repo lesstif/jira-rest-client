@@ -23,6 +23,11 @@ import org.slf4j.LoggerFactory;
 
 
 public class JIRAHTTPClient {
+	public LoggingFeature logging() {
+		java.util.logging.Logger logger = java.util.logging.Logger.getLogger(this.getClass().getName());
+		return new LoggingFeature(logger, java.util.logging.Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, null);
+	}
+
 	private ClientConfig clientConfig;
 		
 	private Client client;
@@ -74,13 +79,13 @@ public class JIRAHTTPClient {
 		clientConfig.property(ClientProperties.CONNECT_TIMEOUT, 5000);
 		clientConfig.property(ClientProperties.FOLLOW_REDIRECTS, true);
 		//clientConfig.property(ClientProperties.REQUEST_ENTITY_PROCESSING, true);
-		if (config.getString("jira.verbose").equals("true")) {
-			clientConfig.property(LoggingFeature.LOGGING_FEATURE_VERBOSITY_CLIENT, LoggingFeature.Verbosity.PAYLOAD_ANY);
-		}
 
 		clientConfig.register(MultiPartFeature.class);
 
 		client = ClientBuilder.newClient(clientConfig);
+		if (config.getString("jira.verbose").equals("true")) {
+			client.register(logging());
+		}
 
 		this.url = config.getString("jira.server.url");
 		this.user = config.getString("jira.user.id");
@@ -118,8 +123,7 @@ public class JIRAHTTPClient {
 
 		Response response = webTarget.request(MediaType.APPLICATION_JSON + ";charset=utf-8")
 									.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
-									.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-									.post(Entity.text(content));
+									.post(Entity.json(content));
 		
 		return checkStatus(response);
 	}
@@ -131,7 +135,7 @@ public class JIRAHTTPClient {
 
 		Response response = webTarget.request()
 				.header("X-Atlassian-Token", "nocheck")
-				//.type(MediaType.MULTIPART_FORM_DATA)
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + this.pat)
 				.post(Entity.entity(multiPart, multiPart.getMediaType()));
 
 		return checkStatus(response);

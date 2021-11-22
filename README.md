@@ -1,8 +1,8 @@
 # Jira-rest-client
 
-Atlassian's JIRA REST API Implementation for Java.
+Atlassian's JIRA REST API Implementation for Java(JDK 8+ or above only).
 
-jira-rest-client depends on [jersey-client](https://jersey.java.net/documentation/latest/client.html), [Jackson Json Processor](https://github.com/FasterXML/jackson), [Project Lombok](http://projectlombok.org/), [Joda-Time](http://www.joda.org/joda-time/).
+jira-rest-client depends on [jersey-client](https://jersey.java.net/documentation/latest/client.html), [Jackson Json Processor](https://github.com/FasterXML/jackson), [Project Lombok](http://projectlombok.org/).
 
 JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/REST/latest/)
 
@@ -19,12 +19,20 @@ JIRA REST API documentation can be found [here](https://docs.atlassian.com/jira/
 	      <version>EDIT_THIS</version>
 	    </dependency>
 	```
-
+	
+	build.gradle
+   ```groovy
+     dependencies {
+   		 implementation "com.lesstif:jira-rest-api:0.8.1"
+   	}
+   ```
+   
 3. create *jira-rest-client.properties* file into directory in the CLASS PATH variable and set your jira host and auth infos.    
 	```
 	jira.server.url="https://your-jira.host.com"
 	jira.user.id="jira-username"
-	jira.user.pwd="jira-password"
+	jira.user.pat="your-jira-personal-access-token-here"
+	jira.verbose=false
 	```
 	
 # Usage
